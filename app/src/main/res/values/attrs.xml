@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<attr name="colorPrimary" format="color" />
@@ -6,12 +5,3 @@
 	<attr name="colorSurface" format="color" />
 	<attr name="colorOnSurface" format="color" />
 </resources>
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<attr name="colorPrimary" format="color" />
-	<attr name="colorOnPrimary" format="color" />
-	<attr name="colorSurface" format="color" />
-	<attr name="colorOnSurface" format="color" />
-</resources>
->>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76

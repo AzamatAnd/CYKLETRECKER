@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
 	android:minWidth="120dp"
 	android:minHeight="60dp"
@@ -9,15 +8,3 @@
 	android:widgetCategory="home_screen" />
 
 
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-	android:minWidth="120dp"
-	android:minHeight="60dp"
-	android:updatePeriodMillis="0"
-	android:initialLayout="@android:layout/simple_list_item_1"
-	android:resizeMode="horizontal|vertical"
-	android:widgetCategory="home_screen" />
-
-
->>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76

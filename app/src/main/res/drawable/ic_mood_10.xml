@@ -1,18 +1,17 @@
-<<<<<<< HEAD
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+﻿<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     
-    <!-- Очень счастливое настроение -->
+    <!-- РћС‡РµРЅСЊ СЃС‡Р°СЃС‚Р»РёРІРѕРµ РЅР°СЃС‚СЂРѕРµРЅРёРµ -->
     <circle
         android:fillColor="#FFEB3B"
         android:cx="12"
         android:cy="12"
         android:r="8"/>
     
-    <!-- Глаза -->
+    <!-- Р“Р»Р°Р·Р° -->
     <path
         android:fillColor="#212121"
         android:pathData="M9,9C9,9 9.5,8.5 10,9C10.5,9.5 10,10 9,9Z"/>
@@ -20,12 +19,12 @@
         android:fillColor="#212121"
         android:pathData="M14,9C14,9 14.5,8.5 15,9C15.5,9.5 15,10 14,9Z"/>
     
-    <!-- Рот -->
+    <!-- Р РѕС‚ -->
     <path
         android:fillColor="#212121"
         android:pathData="M9,15C9,15 12,17 15,15"/>
     
-    <!-- Щеки -->
+    <!-- Р©РµРєРё -->
     <circle
         android:fillColor="#FFCDD2"
         android:cx="7"
@@ -37,7 +36,7 @@
         android:cy="13"
         android:r="1.5"/>
     
-    <!-- Радостные элементы -->
+    <!-- Р Р°РґРѕСЃС‚РЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ -->
     <path
         android:fillColor="#4CAF50"
         android:pathData="M4,4C4,4 6,6 8,4C10,6 12,4 4,4Z"/>
@@ -45,7 +44,7 @@
         android:fillColor="#4CAF50"
         android:pathData="M16,4C16,4 18,6 20,4C22,6 24,4 16,4Z"/>
     
-    <!-- Звездочки радости -->
+    <!-- Р—РІРµР·РґРѕС‡РєРё СЂР°РґРѕСЃС‚Рё -->
     <path
         android:fillColor="#FFD700"
         android:pathData="M6,6L7,8L9,8L7.5,9.5L8,11L6,10L4,11L4.5,9.5L3,8L5,8Z"/>
@@ -53,59 +52,3 @@
         android:fillColor="#FFD700"
         android:pathData="M18,6L19,8L21,8L19.5,9.5L20,11L18,10L16,11L16.5,9.5L15,8L17,8Z"/>
 </vector>
-=======
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    
-    <!-- Очень счастливое настроение -->
-    <circle
-        android:fillColor="#FFEB3B"
-        android:cx="12"
-        android:cy="12"
-        android:r="8"/>
-    
-    <!-- Глаза -->
-    <path
-        android:fillColor="#212121"
-        android:pathData="M9,9C9,9 9.5,8.5 10,9C10.5,9.5 10,10 9,9Z"/>
-    <path
-        android:fillColor="#212121"
-        android:pathData="M14,9C14,9 14.5,8.5 15,9C15.5,9.5 15,10 14,9Z"/>
-    
-    <!-- Рот -->
-    <path
-        android:fillColor="#212121"
-        android:pathData="M9,15C9,15 12,17 15,15"/>
-    
-    <!-- Щеки -->
-    <circle
-        android:fillColor="#FFCDD2"
-        android:cx="7"
-        android:cy="13"
-        android:r="1.5"/>
-    <circle
-        android:fillColor="#FFCDD2"
-        android:cx="17"
-        android:cy="13"
-        android:r="1.5"/>
-    
-    <!-- Радостные элементы -->
-    <path
-        android:fillColor="#4CAF50"
-        android:pathData="M4,4C4,4 6,6 8,4C10,6 12,4 4,4Z"/>
-    <path
-        android:fillColor="#4CAF50"
-        android:pathData="M16,4C16,4 18,6 20,4C22,6 24,4 16,4Z"/>
-    
-    <!-- Звездочки радости -->
-    <path
-        android:fillColor="#FFD700"
-        android:pathData="M6,6L7,8L9,8L7.5,9.5L8,11L6,10L4,11L4.5,9.5L3,8L5,8Z"/>
-    <path
-        android:fillColor="#FFD700"
-        android:pathData="M18,6L19,8L21,8L19.5,9.5L20,11L18,10L16,11L16.5,9.5L15,8L17,8Z"/>
-</vector>
->>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76

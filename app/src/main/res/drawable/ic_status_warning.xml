@@ -1,16 +1,15 @@
-<<<<<<< HEAD
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+﻿<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     
-    <!-- Предупреждение - треугольник с восклицательным знаком -->
+    <!-- РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ - С‚СЂРµСѓРіРѕР»СЊРЅРёРє СЃ РІРѕСЃРєР»РёС†Р°С‚РµР»СЊРЅС‹Рј Р·РЅР°РєРѕРј -->
     <path
         android:fillColor="#FF9800"
         android:pathData="M12,2L22,20L2,20Z"/>
     
-    <!-- Восклицательный знак -->
+    <!-- Р’РѕСЃРєР»РёС†Р°С‚РµР»СЊРЅС‹Р№ Р·РЅР°Рє -->
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M12,6L12,14"/>
@@ -20,36 +19,8 @@
         android:cy="17"
         android:r="1"/>
     
-    <!-- Декоративные элементы -->
+    <!-- Р”РµРєРѕСЂР°С‚РёРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ -->
     <path
         android:fillColor="#FFC107"
         android:pathData="M12,4L20,18L4,18Z"/>
 </vector>
-=======
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    
-    <!-- Предупреждение - треугольник с восклицательным знаком -->
-    <path
-        android:fillColor="#FF9800"
-        android:pathData="M12,2L22,20L2,20Z"/>
-    
-    <!-- Восклицательный знак -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M12,6L12,14"/>
-    <circle
-        android:fillColor="#FFFFFF"
-        android:cx="12"
-        android:cy="17"
-        android:r="1"/>
-    
-    <!-- Декоративные элементы -->
-    <path
-        android:fillColor="#FFC107"
-        android:pathData="M12,4L20,18L4,18Z"/>
-</vector>
->>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76

@@ -1,16 +1,15 @@
-<<<<<<< HEAD
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+﻿<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     
-    <!-- Боль в животе - стилизованная область живота с волнами -->
+    <!-- Р‘РѕР»СЊ РІ Р¶РёРІРѕС‚Рµ - СЃС‚РёР»РёР·РѕРІР°РЅРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ Р¶РёРІРѕС‚Р° СЃ РІРѕР»РЅР°РјРё -->
     <path
         android:fillColor="#FF5722"
         android:pathData="M12,4C16.42,4 20,7.58 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4Z"/>
     
-    <!-- Внутренние волны боли -->
+    <!-- Р’РЅСѓС‚СЂРµРЅРЅРёРµ РІРѕР»РЅС‹ Р±РѕР»Рё -->
     <path
         android:fillColor="#FFAB91"
         android:pathData="M8,8C8,8 10,10 12,8C14,10 16,8 8,8Z"/>
@@ -21,7 +20,7 @@
         android:fillColor="#FFAB91"
         android:pathData="M8,16C8,16 10,18 12,16C14,18 16,16 8,16Z"/>
     
-    <!-- Точки боли -->
+    <!-- РўРѕС‡РєРё Р±РѕР»Рё -->
     <circle
         android:fillColor="#D32F2F"
         android:cx="9"
@@ -38,44 +37,3 @@
         android:cy="18"
         android:r="0.8"/>
 </vector>
-=======
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    
-    <!-- Боль в животе - стилизованная область живота с волнами -->
-    <path
-        android:fillColor="#FF5722"
-        android:pathData="M12,4C16.42,4 20,7.58 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4Z"/>
-    
-    <!-- Внутренние волны боли -->
-    <path
-        android:fillColor="#FFAB91"
-        android:pathData="M8,8C8,8 10,10 12,8C14,10 16,8 8,8Z"/>
-    <path
-        android:fillColor="#FFAB91"
-        android:pathData="M8,12C8,12 10,14 12,12C14,14 16,12 8,12Z"/>
-    <path
-        android:fillColor="#FFAB91"
-        android:pathData="M8,16C8,16 10,18 12,16C14,18 16,16 8,16Z"/>
-    
-    <!-- Точки боли -->
-    <circle
-        android:fillColor="#D32F2F"
-        android:cx="9"
-        android:cy="10"
-        android:r="0.8"/>
-    <circle
-        android:fillColor="#D32F2F"
-        android:cx="15"
-        android:cy="14"
-        android:r="0.8"/>
-    <circle
-        android:fillColor="#D32F2F"
-        android:cx="12"
-        android:cy="18"
-        android:r="0.8"/>
-</vector>
->>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76
