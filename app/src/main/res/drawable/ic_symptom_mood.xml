@@ -1,0 +1,50 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- Настроение - лицо с эмоциями -->
+    <circle
+        android:fillColor="#FFEB3B"
+        android:cx="12"
+        android:cy="12"
+        android:r="8"/>
+    
+    <!-- Глаза -->
+    <circle
+        android:fillColor="#212121"
+        android:cx="9"
+        android:cy="10"
+        android:r="1"/>
+    <circle
+        android:fillColor="#212121"
+        android:cx="15"
+        android:cy="10"
+        android:r="1"/>
+    
+    <!-- Рот -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M9,15C9,15 12,17 15,15"/>
+    
+    <!-- Щеки -->
+    <circle
+        android:fillColor="#FFCDD2"
+        android:cx="7"
+        android:cy="13"
+        android:r="1.5"/>
+    <circle
+        android:fillColor="#FFCDD2"
+        android:cx="17"
+        android:cy="13"
+        android:r="1.5"/>
+    
+    <!-- Эмоциональные волны -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M4,4C4,4 6,6 8,4C10,6 12,4 4,4Z"/>
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M16,4C16,4 18,6 20,4C22,6 24,4 16,4Z"/>
+</vector>

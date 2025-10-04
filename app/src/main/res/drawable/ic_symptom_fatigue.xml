@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- Усталость - сонная голова с ZZZ -->
+    <circle
+        android:fillColor="#9E9E9E"
+        android:cx="12"
+        android:cy="12"
+        android:r="8"/>
+    
+    <!-- Лицо -->
+    <path
+        android:fillColor="#757575"
+        android:pathData="M9,10C9,10 9.5,9.5 10,10C10.5,10.5 10,11 9,10Z"/>
+    <path
+        android:fillColor="#757575"
+        android:pathData="M14,10C14,10 14.5,9.5 15,10C15.5,10.5 15,11 14,10Z"/>
+    <path
+        android:fillColor="#757575"
+        android:pathData="M9,15C9,15 12,17 15,15"/>
+    
+    <!-- ZZZ -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M4,4L6,4L4,6L6,6"/>
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M18,6L20,6L18,8L20,8"/>
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M2,8L4,8L2,10L4,10"/>
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M20,10L22,10L20,12L22,12"/>
+</vector>
