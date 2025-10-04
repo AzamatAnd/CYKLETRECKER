@@ -2,8 +2,8 @@ name: Android CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main, master ]
+  # push:
+  #   branches: [ main, master ]
 
 permissions:
   contents: write

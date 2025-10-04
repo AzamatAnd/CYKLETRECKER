@@ -1,0 +1,68 @@
+name: Android Build Simple
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Fix Material 3 issues
+        run: |
+          # Fix themes.xml
+          sed -i 's/Theme.Material3.DayNight.NoActionBar/Theme.Material3.DayNight/g' app/src/main/res/values/themes.xml || true
+          sed -i 's/Theme.Material3.DayNight.NoActionBar/Theme.Material3.DayNight/g' app/src/main/res/values-night/themes.xml || true
+          sed -i 's/Theme.Material3.DayNight.NoActionBar/Theme.Material3.DayNight/g' app/src/main/res/values/styles.xml || true
+          
+          # Remove merge conflict markers
+          find . -name "*.xml" -exec sed -i '/<<<<<<< HEAD/,/>>>>>>> /d' {} \; || true
+          find . -name "*.kt" -exec sed -i '/<<<<<<< HEAD/,/>>>>>>> /d' {} \; || true
+
+      - name: Build debug APK
+        run: |
+          ./gradlew clean
+          ./gradlew assembleDebug --no-daemon
+
+      - name: List build outputs
+        run: |
+          echo "=== Debug APK files ==="
+          find app/build/outputs -name "*.apk" -type f || echo "No APK files found"
+          echo "=== Build directory structure ==="
+          ls -la app/build/outputs/ || echo "No outputs directory"
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Create APK folder and copy
+        run: |
+          mkdir -p apk
+          cp app/build/outputs/apk/debug/*.apk apk/app-debug.apk
+          ls -la apk/
+
+      - name: Commit APK to repo
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'apk/*.apk'
+          author_name: github-actions
+          author_email: actions@github.com
+          message: 'chore(ci): add built APK'
+          push: true

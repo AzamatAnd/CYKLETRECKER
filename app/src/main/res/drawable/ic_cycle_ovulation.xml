@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -43,3 +44,50 @@
         android:fillColor="#4CAF50"
         android:pathData="M16,16C16,16 15,15 14,16C13,17 14,18 16,16Z"/>
 </vector>
+=======
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- Овуляция - распустившийся цветок -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M12,2C15.31,2 18,4.69 18,8C18,11.31 15.31,14 12,14C8.69,14 6,11.31 6,8C6,4.69 8.69,2 12,2Z"/>
+    
+    <!-- Лепестки -->
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M12,2C12,2 14,4 12,8C10,4 12,2 12,2Z"/>
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M12,2C12,2 16,6 12,10C8,6 12,2 12,2Z"/>
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M12,2C12,2 18,8 12,12C6,8 12,2 12,2Z"/>
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M12,2C12,2 20,10 12,14C4,10 12,2 12,2Z"/>
+    
+    <!-- Центр цветка -->
+    <circle
+        android:fillColor="#FFD700"
+        android:cx="12"
+        android:cy="8"
+        android:r="2"/>
+    
+    <!-- Стебель -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M12,14L12,22"/>
+    
+    <!-- Листья -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M8,16C8,16 9,15 10,16C11,17 10,18 8,16Z"/>
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M16,16C16,16 15,15 14,16C13,17 14,18 16,16Z"/>
+</vector>
+>>>>>>> 7eb7955987a0da95e1b119ccbbfc2bcdc4522c76

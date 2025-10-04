@@ -21,21 +21,6 @@ android {
 		}
 	}
 
-	buildTypes {
-		release {
-			isMinifyEnabled = true
-			proguardFiles(
-				getDefaultProguardFile("proguard-android-optimize.txt"),
-				"proguard-rules.pro"
-			)
-			// Optional signing via gradle.properties if provided
-			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
-		}
-		debug {
-			isMinifyEnabled = false
-		}
-	}
-
 	signingConfigs {
 		create("release") {
 			val storeFileProp = project.findProperty("RELEASE_STORE_FILE") as String?
@@ -48,6 +33,21 @@ android {
 				keyAlias = keyAliasProp
 				keyPassword = keyPasswordProp
 			}
+		}
+	}
+
+	buildTypes {
+		release {
+			isMinifyEnabled = true
+			proguardFiles(
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
+			)
+			// Optional signing via gradle.properties if provided
+			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+		}
+		debug {
+			isMinifyEnabled = false
 		}
 	}
 

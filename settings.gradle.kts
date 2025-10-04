@@ -16,5 +16,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "CycleTracker"
 include(":app")
-
-
