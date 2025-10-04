@@ -29,7 +29,7 @@ jobs:
         run: |
           ./gradlew --stop || true
           rm -rf ~/.gradle/caches ~/.gradle/wrapper || true
-          ./gradlew clean assembleDebug -x test --no-build-cache || true
+          ./gradlew clean assembleDebug -x test --no-build-cache
 
       - name: Diagnose merged resources
         run: |
@@ -62,12 +62,5 @@ jobs:
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: ignore
 
-      - name: Commit APKs into repo
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: 'apk/*.apk'
-          author_name: github-actions
-          author_email: actions@github.com
-          message: 'chore(ci): add built APKs to apk folder'
-          push: true
+      # APKs are uploaded as artifacts, no need to commit to repo
 
