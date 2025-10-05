@@ -436,7 +436,7 @@ fun AddNoteDialog(
                         .fillMaxWidth()
                         .height(120.dp),
                     maxLines = 4,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFE91E63),
                         focusedLabelColor = Color(0xFFE91E63),
                         cursorColor = Color(0xFFE91E63)
