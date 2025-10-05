@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -175,7 +176,6 @@ fun CalendarGrid(
                 listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEach { day ->
                     Text(
                         text = day,
-                        modifier = Modifier.padding(horizontal = 4.dp),
                         textAlign = TextAlign.Center,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
