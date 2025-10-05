@@ -205,22 +205,19 @@ fun CalendarGrid(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     repeat(7) { dayOfWeek ->
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(1f)
-                        ) {
-                            if (dayCounter in 1..daysInMonth) {
-                                val date = currentMonth.atDay(dayCounter)
-                                DayCell(
-                                    date = date,
-                                    isPeriod = periodDates.contains(date),
-                                    isFertile = fertileDates.contains(date) && !periodDates.contains(date),
-                                    isOvulation = ovulationDates.contains(date),
-                                    isToday = date == LocalDate.now(),
-                                    onClick = { viewModel.togglePeriodDay(date) }
-                                )
-                            }
+                        if (dayCounter in 1..daysInMonth) {
+                            val date = currentMonth.atDay(dayCounter)
+                            DayCell(
+                                date = date,
+                                isPeriod = periodDates.contains(date),
+                                isFertile = fertileDates.contains(date) && !periodDates.contains(date),
+                                isOvulation = ovulationDates.contains(date),
+                                isToday = date == LocalDate.now(),
+                                modifier = Modifier.weight(1f),
+                                onClick = { viewModel.togglePeriodDay(date) }
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                         dayCounter++
                     }
@@ -290,6 +287,7 @@ fun RowScope.DayCell(
     isFertile: Boolean,
     isOvulation: Boolean,
     isToday: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -315,9 +313,8 @@ fun RowScope.DayCell(
     }
     
     Box(
-        modifier = Modifier
-            .weight(1f)
-			.aspectRatio(1f)
+        modifier = modifier
+            .aspectRatio(1f)
             .padding(4.dp)
             .scale(scale)
 			.clip(CircleShape)
