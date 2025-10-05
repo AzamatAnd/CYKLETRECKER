@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -206,18 +205,22 @@ fun CalendarGrid(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     repeat(7) { dayOfWeek ->
-                        if (dayCounter in 1..daysInMonth) {
-                            val date = currentMonth.atDay(dayCounter)
-                            DayCell(
-                                date = date,
-                                isPeriod = periodDates.contains(date),
-                                isFertile = fertileDates.contains(date) && !periodDates.contains(date),
-                                isOvulation = ovulationDates.contains(date),
-                                isToday = date == LocalDate.now(),
-                                onClick = { viewModel.togglePeriodDay(date) }
-                            )
-                        } else {
-                            Spacer(modifier = Modifier.weight(1f))
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f)
+                        ) {
+                            if (dayCounter in 1..daysInMonth) {
+                                val date = currentMonth.atDay(dayCounter)
+                                DayCell(
+                                    date = date,
+                                    isPeriod = periodDates.contains(date),
+                                    isFertile = fertileDates.contains(date) && !periodDates.contains(date),
+                                    isOvulation = ovulationDates.contains(date),
+                                    isToday = date == LocalDate.now(),
+                                    onClick = { viewModel.togglePeriodDay(date) }
+                                )
+                            }
                         }
                         dayCounter++
                     }
