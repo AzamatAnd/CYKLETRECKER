@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,7 +32,8 @@ fun HomeScreen(
     onNavigateToCalendar: () -> Unit,
     onNavigateToStatistics: () -> Unit,
     onNavigateToNotes: () -> Unit,
-    onNavigateToAssistant: () -> Unit
+    onNavigateToAssistant: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
@@ -140,6 +142,21 @@ fun HomeScreen(
                 Icon(Icons.Default.Psychology, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("🤖 Умный помощник", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Settings button
+            Button(
+                onClick = onNavigateToSettings,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF607D8B)
+                )
+            ) {
+                Icon(Icons.Default.Settings, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Настройки уведомлений", color = Color.White, fontSize = 16.sp)
             }
             
             Spacer(modifier = Modifier.height(24.dp))

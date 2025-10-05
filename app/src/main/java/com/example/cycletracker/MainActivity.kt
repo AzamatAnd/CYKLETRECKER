@@ -15,6 +15,7 @@ import com.example.cycletracker.ui.assistant.AssistantScreen
 import com.example.cycletracker.ui.calendar.CalendarScreen
 import com.example.cycletracker.ui.home.HomeScreen
 import com.example.cycletracker.ui.notes.NotesScreen
+import com.example.cycletracker.ui.settings.SettingsScreen
 import com.example.cycletracker.ui.statistics.StatisticsScreen
 import com.example.cycletracker.ui.theme.CycleTrackerTheme
 
@@ -40,7 +41,8 @@ class MainActivity : ComponentActivity() {
                             onNavigateToCalendar = { currentScreen = "calendar" },
                             onNavigateToStatistics = { currentScreen = "statistics" },
                             onNavigateToNotes = { currentScreen = "notes" },
-                            onNavigateToAssistant = { currentScreen = "assistant" }
+                            onNavigateToAssistant = { currentScreen = "assistant" },
+                            onNavigateToSettings = { currentScreen = "settings" }
                         )
                         "calendar" -> CalendarScreen(
                             viewModel = viewModel,
@@ -55,6 +57,10 @@ class MainActivity : ComponentActivity() {
                             onNavigateBack = { currentScreen = "home" }
                         )
                         "assistant" -> AssistantScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = "home" }
+                        )
+                        "settings" -> SettingsScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )
