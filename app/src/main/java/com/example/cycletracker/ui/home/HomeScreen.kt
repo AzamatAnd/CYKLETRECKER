@@ -52,7 +52,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "🌸 Cycle Tracker",
+                text = "🌸 Женский календарь",
                 fontSize = 32.sp,
                 color = Color(0xFFE91E63),
                 textAlign = TextAlign.Center
@@ -70,7 +70,7 @@ fun HomeScreen(
             ) {
                 Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Open Calendar", color = Color.White, fontSize = 16.sp)
+                Text("Календарь", color = Color.White, fontSize = 16.sp)
             }
             
             Spacer(modifier = Modifier.height(12.dp))
@@ -85,7 +85,7 @@ fun HomeScreen(
             ) {
                 Icon(Icons.Default.BarChart, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("View Statistics", color = Color.White, fontSize = 16.sp)
+                Text("Статистика", color = Color.White, fontSize = 16.sp)
             }
             
             Spacer(modifier = Modifier.height(24.dp))
@@ -102,24 +102,24 @@ fun HomeScreen(
                         modifier = Modifier.padding(20.dp)
                     ) {
                         Text(
-                            text = "Last Cycle",
+                            text = "Последний цикл",
                             fontSize = 20.sp,
                             color = Color(0xFFE91E63)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "Started: ${lastCycle.startDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
+                            text = "Начало: ${lastCycle.startDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
                             fontSize = 16.sp,
                             color = Color.Black
                         )
                         if (lastCycle.endDate != null) {
                             Text(
-                                text = "Ended: ${lastCycle.endDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
+                                text = "Конец: ${lastCycle.endDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
                                 fontSize = 16.sp,
                                 color = Color.Black
                             )
                             Text(
-                                text = "Length: ${lastCycle.cycleLength} days",
+                                text = "Длительность: ${lastCycle.cycleLength} дней",
                                 fontSize = 14.sp,
                                 color = Color.Gray
                             )
@@ -139,14 +139,14 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "No cycles tracked yet",
+                            text = "Циклы ещё не отслеживаются",
                             fontSize = 18.sp,
                             color = Color.Black,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Tap + button to start tracking!",
+                            text = "Нажмите кнопку + чтобы начать!",
                             fontSize = 14.sp,
                             color = Color.Gray,
                             textAlign = TextAlign.Center

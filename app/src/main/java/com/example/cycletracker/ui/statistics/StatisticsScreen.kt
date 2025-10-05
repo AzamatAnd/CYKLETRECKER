@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
 import java.time.Period
@@ -39,10 +40,10 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Statistics") },
+                title = { Text("Статистика") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.Default.ArrowBack, "Назад")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -72,9 +73,9 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 ) {
                     StatCard(
                         modifier = Modifier.weight(1f),
-                        title = "Avg Cycle",
+                        title = "Средний цикл",
                         value = stats.avgCycleLength?.toString() ?: "—",
-                        unit = "days",
+                        unit = "дней",
                         gradient = Brush.linearGradient(
                             colors = listOf(Color(0xFFE91E63), Color(0xFFF06292))
                         ),
@@ -83,9 +84,9 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                     
                     StatCard(
                         modifier = Modifier.weight(1f),
-                        title = "Total Cycles",
+                        title = "Всего циклов",
                         value = stats.totalCycles.toString(),
-                        unit = "tracked",
+                        unit = "отслежено",
                         gradient = Brush.linearGradient(
                             colors = listOf(Color(0xFF9C27B0), Color(0xFFBA68C8))
                         ),
@@ -95,18 +96,18 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 
                 // Period length card
                 AnimatedStatCard(
-                    title = "Average Period Length",
+                    title = "Средняя длина периода",
                     value = stats.avgPeriodLength ?: 0,
                     maxValue = 7,
-                    unit = "days",
+                    unit = "дней",
                     color = Color(0xFFE91E63)
                 )
                 
                 // Tracking duration
                 BigStatCard(
-                    title = "📅 Tracking Since",
+                    title = "📅 Отслеживание с",
                     value = stats.trackingDays.toString(),
-                    subtitle = "days of data",
+                    subtitle = "дней данных",
                     gradient = Brush.linearGradient(
                         colors = listOf(Color(0xFFFF9800), Color(0xFFFFB74D))
                     )
@@ -387,7 +388,7 @@ fun CycleRangeCard(
                 .padding(20.dp)
         ) {
             Text(
-                text = "Cycle Length Range",
+                text = "Диапазон длины цикла",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE91E63)
@@ -399,9 +400,9 @@ fun CycleRangeCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                RangeItem("Shortest", shortest, Color(0xFF4CAF50))
-                RangeItem("Average", average, Color(0xFFE91E63))
-                RangeItem("Longest", longest, Color(0xFFFF9800))
+                RangeItem("Короткий", shortest, Color(0xFF4CAF50))
+                RangeItem("Средний", average, Color(0xFFE91E63))
+                RangeItem("Длинный", longest, Color(0xFFFF9800))
             }
         }
     }
@@ -428,6 +429,14 @@ fun RangeItem(label: String, value: Int, color: Color) {
 
 @Composable
 fun RegularityCard(regularity: String) {
+    val regularityRu = when (regularity) {
+        "Excellent" -> "Отличная"
+        "Good" -> "Хорошая"
+        "Fair" -> "Средняя"
+        "Variable" -> "Переменная"
+        else -> "Недостаточно данных"
+    }
+    
     val (color, emoji) = when (regularity) {
         "Excellent" -> Color(0xFF4CAF50) to "🌟"
         "Good" -> Color(0xFF8BC34A) to "✅"
@@ -450,13 +459,13 @@ fun RegularityCard(regularity: String) {
         ) {
             Column {
                 Text(
-                    text = "Cycle Regularity",
+                    text = "Регулярность цикла",
                     fontSize = 14.sp,
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = regularity,
+                    text = regularityRu,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = color
@@ -490,16 +499,17 @@ fun EmptyStateCard() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Data Yet",
+                text = "Пока нет данных",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Gray
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Start tracking your cycles to see statistics",
+                text = "Начните отслеживать циклы, чтобы увидеть статистику",
                 fontSize = 14.sp,
-                color = Color.Gray
+                color = Color.Gray,
+                textAlign = TextAlign.Center
             )
         }
     }

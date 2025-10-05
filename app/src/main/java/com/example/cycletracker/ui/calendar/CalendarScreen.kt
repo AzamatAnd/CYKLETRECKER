@@ -36,10 +36,10 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Calendar") },
+                title = { Text("Календарь") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.Default.ArrowBack, "Назад")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -107,7 +107,7 @@ fun MonthNavigationBar(
             }
             
             Text(
-                text = currentMonth.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())),
+                text = currentMonth.format(DateTimeFormatter.ofPattern("LLLL yyyy", Locale("ru"))),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE91E63)
@@ -156,7 +156,7 @@ fun CalendarGrid(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun").forEach { day ->
+                listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEach { day ->
                     Box(
                         modifier = Modifier.weight(1f),
                         contentAlignment = Alignment.Center
@@ -292,14 +292,14 @@ fun CalendarLegend() {
             
             LegendItem(
                 color = Color(0xFFE91E63),
-                label = "Period day"
+                label = "День менструации"
             )
             
             Spacer(modifier = Modifier.height(8.dp))
             
             LegendItem(
                 color = Color(0xFF4CAF50),
-                label = "Today (green glow)"
+                label = "Сегодня (зелёное свечение)"
             )
         }
     }
