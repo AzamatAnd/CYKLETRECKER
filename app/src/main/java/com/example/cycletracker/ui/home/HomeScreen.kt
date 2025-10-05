@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
 import java.time.format.DateTimeFormatter
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun HomeScreen(
@@ -27,6 +30,22 @@ fun HomeScreen(
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
+    
+    // Calculate predictions
+    val avgCycleLength = remember(cycles) {
+        val completedCycles = cycles.filter { it.cycleLength != null }
+        if (completedCycles.isNotEmpty()) {
+            completedCycles.mapNotNull { it.cycleLength }.average().toInt()
+        } else 28
+    }
+    
+    val nextCycleDate = remember(lastCycle, avgCycleLength) {
+        lastCycle?.startDate?.plusDays(avgCycleLength.toLong())
+    }
+    
+    val daysUntilNext = remember(nextCycleDate) {
+        nextCycleDate?.let { ChronoUnit.DAYS.between(LocalDate.now(), it).toInt() }
+    }
     
     Scaffold(
         containerColor = Color(0xFFFFF0F5),
@@ -89,6 +108,17 @@ fun HomeScreen(
             }
             
             Spacer(modifier = Modifier.height(24.dp))
+            
+            // Prediction card
+            if (nextCycleDate != null && daysUntilNext != null) {
+                PredictionCard(
+                    nextCycleDate = nextCycleDate,
+                    daysUntilNext = daysUntilNext,
+                    avgCycleLength = avgCycleLength
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             
             if (lastCycle != null) {
                 Card(
@@ -154,6 +184,84 @@ fun HomeScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun PredictionCard(
+    nextCycleDate: LocalDate,
+    daysUntilNext: Int,
+    avgCycleLength: Int
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF9C27B0)
+        ),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "🔮 Прогноз следующего цикла",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Days until next cycle
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = when {
+                        daysUntilNext < 0 -> "Просрочен на ${-daysUntilNext}"
+                        daysUntilNext == 0 -> "Сегодня"
+                        daysUntilNext == 1 -> "Завтра"
+                        else -> "Через $daysUntilNext"
+                    },
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                if (daysUntilNext > 1) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = when {
+                            daysUntilNext % 10 == 1 && daysUntilNext % 100 != 11 -> "день"
+                            daysUntilNext % 10 in 2..4 && daysUntilNext % 100 !in 12..14 -> "дня"
+                            else -> "дней"
+                        },
+                        fontSize = 20.sp,
+                        color = Color.White.copy(alpha = 0.9f),
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = "Ожидаемая дата: ${nextCycleDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale("ru")))}",
+                fontSize = 14.sp,
+                color = Color.White.copy(alpha = 0.85f)
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "Средняя длина цикла: $avgCycleLength дней",
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.7f)
+            )
         }
     }
 }
