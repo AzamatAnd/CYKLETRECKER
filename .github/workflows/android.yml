@@ -3,7 +3,7 @@ name: Android CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, main-branch ]
 
 permissions:
   contents: write
@@ -39,8 +39,8 @@ jobs:
           LAST_FILES=$(find app/build -path "*/merged_res/*/values/values.xml" -type f | tail -n 5)
           for f in $LAST_FILES; do echo "===== $f ====="; sed -n '1,1200p' "$f" | tail -n 200; done || true
 
-      - name: Build release APK (continue-on-error)
-        run: ./gradlew assembleRelease -x test --no-build-cache || true
+      - name: Build release APK
+        run: ./gradlew assembleRelease -x test --no-build-cache
 
       - name: Prepare apk folder
         run: |
