@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -204,20 +203,23 @@ fun CalendarGrid(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    repeat(7) { dayOfWeek ->
-                        if (dayCounter in 1..daysInMonth) {
-                            val date = currentMonth.atDay(dayCounter)
-                            DayCell(
-                                date = date,
-                                isPeriod = periodDates.contains(date),
-                                isFertile = fertileDates.contains(date) && !periodDates.contains(date),
-                                isOvulation = ovulationDates.contains(date),
-                                isToday = date == LocalDate.now(),
-                                modifier = Modifier.weight(1f),
-                                onClick = { viewModel.togglePeriodDay(date) }
-                            )
-                        } else {
-                            Spacer(modifier = Modifier.weight(1f))
+                    repeat(7) { _ ->
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f)
+                        ) {
+                            if (dayCounter in 1..daysInMonth) {
+                                val date = currentMonth.atDay(dayCounter)
+                                DayCell(
+                                    date = date,
+                                    isPeriod = periodDates.contains(date),
+                                    isFertile = fertileDates.contains(date) && !periodDates.contains(date),
+                                    isOvulation = ovulationDates.contains(date),
+                                    isToday = date == LocalDate.now(),
+                                    onClick = { viewModel.togglePeriodDay(date) }
+                                )
+                            }
                         }
                         dayCounter++
                     }
@@ -312,9 +314,9 @@ fun RowScope.DayCell(
         )
     }
     
-    Box(
-        modifier = modifier
-            .aspectRatio(1f)
+	Box(
+		modifier = modifier
+			.aspectRatio(1f)
             .padding(4.dp)
             .scale(scale)
 			.clip(CircleShape)
