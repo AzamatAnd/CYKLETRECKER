@@ -105,7 +105,7 @@ fun NotesScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
             Spacer(modifier = Modifier.height(12.dp))
             
             // Notes list
-            NotesList()
+            NotesList(notes)
         }
     }
     
@@ -266,16 +266,9 @@ fun QuickSymptomButton(
 }
 
 @Composable
-fun NotesList() {
-    val sampleNotes = remember {
-        listOf(
-            NoteData("Отличное настроение весь день! 😊", "10:30", Color(0xFF4CAF50)),
-            NoteData("Небольшая головная боль", "14:15", Color(0xFFFF9800)),
-            NoteData("Легкая усталость к вечеру", "18:45", Color(0xFF9C27B0))
-        )
-    }
+fun NotesList(notes: List<Note>) {
     
-    if (sampleNotes.isEmpty()) {
+    if (notes.isEmpty()) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -308,7 +301,7 @@ fun NotesList() {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(sampleNotes) { note ->
+            items(notes) { note ->
                 NoteCard(note)
             }
         }
@@ -316,7 +309,7 @@ fun NotesList() {
 }
 
 @Composable
-fun NoteCard(note: NoteData) {
+fun NoteCard(note: Note) {
     var isExpanded by remember { mutableStateOf(false) }
     
     Card(
@@ -337,7 +330,7 @@ fun NoteCard(note: NoteData) {
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(note.color)
+                    .background(Color(0xFFE91E63))
             )
             
             Spacer(modifier = Modifier.width(12.dp))

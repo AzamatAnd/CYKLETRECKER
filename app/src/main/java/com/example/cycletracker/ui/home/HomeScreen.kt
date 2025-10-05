@@ -344,7 +344,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun PredictionCard(
+fun PredictionCard(
     nextCycleDate: LocalDate,
     daysUntilNext: Int,
     avgCycleLength: Int

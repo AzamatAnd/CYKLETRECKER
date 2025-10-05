@@ -134,8 +134,7 @@ class BackupManager(private val context: Context) {
                     id = cycleJson.getLong("id"),
                     startDate = LocalDate.parse(cycleJson.getString("startDate")),
                     endDate = cycleJson.optString("endDate")?.let { LocalDate.parse(it) },
-                    cycleLength = cycleJson.optInt("cycleLength").takeIf { it > 0 },
-                    notes = null
+                    cycleLength = cycleJson.optInt("cycleLength").takeIf { it > 0 }
                 )
             }
         }
