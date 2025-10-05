@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Spa
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,7 +39,9 @@ fun HomeScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToMood: () -> Unit = {},
     onNavigateToMeds: () -> Unit = {},
-    onNavigateToPhases: () -> Unit = {}
+    onNavigateToPhases: () -> Unit = {},
+    onNavigateToTrends: () -> Unit = {},
+    onNavigateToGoals: () -> Unit = {}
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
@@ -131,6 +135,36 @@ fun HomeScreen(
                 Icon(Icons.Default.Spa, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Фазы цикла", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Trends button
+            Button(
+                onClick = onNavigateToTrends,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6A1B9A)
+                )
+            ) {
+                Icon(Icons.Default.TrendingUp, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Анализ трендов", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Goals button
+            Button(
+                onClick = onNavigateToGoals,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2E7D32)
+                )
+            ) {
+                Icon(Icons.Default.Favorite, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Мои цели", color = Color.White, fontSize = 16.sp)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
