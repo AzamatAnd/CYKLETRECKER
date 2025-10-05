@@ -1,5 +1,6 @@
 package com.example.cycletracker.ui.statistics
 
+import android.content.Intent
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
