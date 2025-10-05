@@ -103,7 +103,10 @@ dependencies {
 	implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
 	implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
-	implementation("androidx.datastore:datastore-preferences:1.1.1")
+		implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+		// WorkManager for reminders
+		implementation("androidx.work:work-runtime-ktx:2.9.1")
 
 	implementation("androidx.room:room-runtime:2.6.1")
 	ksp("androidx.room:room-compiler:2.6.1")

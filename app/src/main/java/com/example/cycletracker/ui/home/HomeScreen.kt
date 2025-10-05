@@ -33,7 +33,9 @@ fun HomeScreen(
     onNavigateToStatistics: () -> Unit,
     onNavigateToNotes: () -> Unit,
     onNavigateToAssistant: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    onNavigateToMood: () -> Unit = {},
+    onNavigateToMeds: () -> Unit = {}
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
@@ -131,6 +133,32 @@ fun HomeScreen(
             
             Spacer(modifier = Modifier.height(12.dp))
             
+            // Mood button
+            Button(
+                onClick = onNavigateToMood,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF00BCD4)
+                )
+            ) {
+                Text("Дневник настроения", color = Color.White, fontSize = 16.sp)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Medications button
+            Button(
+                onClick = onNavigateToMeds,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF009688)
+                )
+            ) {
+                Text("Лекарства", color = Color.White, fontSize = 16.sp)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             // AI Assistant button
             Button(
                 onClick = onNavigateToAssistant,

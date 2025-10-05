@@ -26,4 +26,31 @@ class CycleRepository(private val cycleDao: CycleDao) {
             cycleDao.insertPeriodDay(PeriodDay(date = date))
         }
     }
+
+    // Mood diary
+    fun getMoodEntries(from: LocalDate, to: LocalDate): Flow<List<MoodEntry>> =
+        cycleDao.getMoodEntriesRange(from, to)
+
+    suspend fun upsertMoodEntry(entry: MoodEntry): Long = cycleDao.upsertMoodEntry(entry)
+
+    suspend fun getMoodSettingsOrDefault(): MoodSettings =
+        cycleDao.getMoodSettings() ?: MoodSettings()
+
+    suspend fun saveMoodSettings(settings: MoodSettings) = cycleDao.upsertMoodSettings(settings)
+
+    // Medications
+    fun getMedications(): Flow<List<Medication>> = cycleDao.getMedications()
+
+    suspend fun upsertMedication(med: Medication): Long = cycleDao.upsertMedication(med)
+
+    suspend fun deleteMedication(id: Long) = cycleDao.deleteMedication(id)
+
+    fun getMedicationIntakesByDate(date: LocalDate): Flow<List<MedicationIntake>> =
+        cycleDao.getMedicationIntakesByDate(date)
+
+    suspend fun upsertMedicationIntake(intake: MedicationIntake): Long =
+        cycleDao.upsertMedicationIntake(intake)
+
+    suspend fun markMedicationIntake(id: Long, taken: Boolean, takenAt: Long?) =
+        cycleDao.markMedicationIntake(id, taken, takenAt)
 }

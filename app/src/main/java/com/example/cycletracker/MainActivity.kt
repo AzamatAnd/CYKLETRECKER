@@ -18,6 +18,8 @@ import com.example.cycletracker.ui.notes.NotesScreen
 import com.example.cycletracker.ui.settings.SettingsScreen
 import com.example.cycletracker.ui.statistics.StatisticsScreen
 import com.example.cycletracker.ui.theme.CycleTrackerTheme
+import com.example.cycletracker.ui.mood.MoodScreen
+import com.example.cycletracker.ui.meds.MedicationsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,9 @@ class MainActivity : ComponentActivity() {
                             onNavigateToStatistics = { currentScreen = "statistics" },
                             onNavigateToNotes = { currentScreen = "notes" },
                             onNavigateToAssistant = { currentScreen = "assistant" },
-                            onNavigateToSettings = { currentScreen = "settings" }
+                            onNavigateToSettings = { currentScreen = "settings" },
+                            onNavigateToMood = { currentScreen = "mood" },
+                            onNavigateToMeds = { currentScreen = "meds" }
                         )
                         "calendar" -> CalendarScreen(
                             viewModel = viewModel,
@@ -61,6 +65,14 @@ class MainActivity : ComponentActivity() {
                             onNavigateBack = { currentScreen = "home" }
                         )
                         "settings" -> SettingsScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = "home" }
+                        )
+                        "mood" -> MoodScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = "home" }
+                        )
+                        "meds" -> MedicationsScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )
