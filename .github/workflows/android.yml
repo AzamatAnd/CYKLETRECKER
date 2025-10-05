@@ -3,7 +3,7 @@ name: Android CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master, main-branch ]
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
           java-version: 17
 
       - name: Make gradlew executable
-        run: chmod +x ./gradlew || true
+        run: chmod +x ./gradlew
 
       - name: Build APKs (clean, no cache)
         run: |
