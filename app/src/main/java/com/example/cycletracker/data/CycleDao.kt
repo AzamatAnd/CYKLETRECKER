@@ -11,6 +11,9 @@ interface CycleDao {
     
     @Query("SELECT * FROM cycles ORDER BY startDate DESC LIMIT 1")
     suspend fun getLastCycle(): Cycle?
+
+    @Query("SELECT * FROM cycles ORDER BY startDate DESC")
+    suspend fun getAllCyclesSnapshot(): List<Cycle>
     
     @Insert
     suspend fun insertCycle(cycle: Cycle): Long

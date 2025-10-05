@@ -1,16 +1,39 @@
 package com.example.cycletracker.ui.calendar
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,12 +44,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cycletracker.data.Cycle
+import com.example.cycletracker.data.Cycle
 import com.example.cycletracker.ui.CycleViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,18 +154,10 @@ fun CalendarGrid(
     viewModel: CycleViewModel
 ) {
     val cycles by viewModel.cycles.collectAsState()
-    val periodDates = remember(cycles) {
-        cycles.flatMap { cycle ->
-            val dates = mutableListOf<LocalDate>()
-            var date = cycle.startDate
-            val endDate = cycle.endDate ?: cycle.startDate.plusDays(5)
-            while (!date.isAfter(endDate)) {
-                dates.add(date)
-                date = date.plusDays(1)
-            }
-            dates
-        }.toSet()
-    }
+    val calendarMarks = remember(cycles) { buildCalendarMarks(cycles) }
+    val periodDates = calendarMarks.periodDates
+    val fertileDates = calendarMarks.fertileDates
+    val ovulationDates = calendarMarks.ovulationDates
     
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -192,6 +208,8 @@ fun CalendarGrid(
                             DayCell(
                                 date = date,
                                 isPeriod = periodDates.contains(date),
+                                isFertile = fertileDates.contains(date) && !periodDates.contains(date),
+                                isOvulation = ovulationDates.contains(date),
                                 isToday = date == LocalDate.now(),
                                 onClick = { viewModel.togglePeriodDay(date) }
                             )
@@ -207,10 +225,64 @@ fun CalendarGrid(
     }
 }
 
+private data class CalendarMarks(
+    val periodDates: Set<LocalDate>,
+    val fertileDates: Set<LocalDate>,
+    val ovulationDates: Set<LocalDate>
+)
+
+private fun buildCalendarMarks(cycles: List<Cycle>): CalendarMarks {
+    if (cycles.isEmpty()) {
+        return CalendarMarks(emptySet(), emptySet(), emptySet())
+    }
+
+    val periodDates = cycles.flatMap { cycle ->
+        val dates = mutableListOf<LocalDate>()
+        var date = cycle.startDate
+        val endDate = cycle.endDate ?: cycle.startDate.plusDays(5)
+        while (!date.isAfter(endDate)) {
+            dates.add(date)
+            date = date.plusDays(1)
+        }
+        dates
+    }.toMutableSet()
+
+    val recentCycles = cycles.take(6)
+    val averageCycleLength = recentCycles.mapNotNull { it.cycleLength }
+        .takeIf { it.isNotEmpty() }
+        ?.average()?.toInt() ?: 28
+
+    val latestCycle = cycles.first()
+    val baseCycleLength = latestCycle.cycleLength ?: averageCycleLength
+    val ovulationOffset = (baseCycleLength - 14).coerceIn(10, baseCycleLength)
+    val ovulationDate = latestCycle.startDate.plusDays(ovulationOffset.toLong())
+
+    val ovulationDates = mutableSetOf<LocalDate>()
+    val fertileDates = mutableSetOf<LocalDate>()
+
+    if (!periodDates.contains(ovulationDate)) {
+        ovulationDates.add(ovulationDate)
+    }
+
+    val fertileWindowStart = ovulationDate.minusDays(4)
+    val fertileWindowEnd = ovulationDate.plusDays(1)
+    var current = fertileWindowStart
+    while (!current.isAfter(fertileWindowEnd)) {
+        if (!periodDates.contains(current)) {
+            fertileDates.add(current)
+        }
+        current = current.plusDays(1)
+    }
+
+    return CalendarMarks(periodDates, fertileDates, ovulationDates)
+}
+
 @Composable
 fun RowScope.DayCell(
     date: LocalDate,
     isPeriod: Boolean,
+    isFertile: Boolean,
+    isOvulation: Boolean,
     isToday: Boolean,
     onClick: () -> Unit
 ) {
@@ -221,9 +293,15 @@ fun RowScope.DayCell(
         label = "scale"
     )
     
-    val backgroundColor = when {
+    val backgroundBrush = when {
         isPeriod -> Brush.radialGradient(
             colors = listOf(Color(0xFFFF6B9D), Color(0xFFE91E63))
+        )
+        isOvulation -> Brush.radialGradient(
+            colors = listOf(Color(0xFFFFF176), Color(0xFFFFC107))
+        )
+        isFertile -> Brush.radialGradient(
+            colors = listOf(Color(0xFFDCEDC8), Color(0xFFA5D6A7))
         )
         else -> Brush.radialGradient(
             colors = listOf(Color(0xFFFFF0F5), Color(0xFFFFE4E1))
@@ -233,23 +311,30 @@ fun RowScope.DayCell(
     Box(
         modifier = Modifier
             .weight(1f)
-            .aspectRatio(1f)
+			.aspectRatio(1f)
             .padding(4.dp)
             .scale(scale)
-            .clip(CircleShape)
-            .background(backgroundColor)
+			.clip(CircleShape)
+            .background(backgroundBrush)
             .clickable {
                 isPressed = true
                 onClick()
                 isPressed = false
             },
-        contentAlignment = Alignment.Center
-    ) {
+		contentAlignment = Alignment.Center
+	) {
+        val baseTextColor = when {
+            isPeriod -> Color.White
+            isOvulation -> Color(0xFF3E2723)
+            isFertile -> Color(0xFF1B5E20)
+            else -> Color.Black
+        }
+
         Text(
             text = date.dayOfMonth.toString(),
             fontSize = 16.sp,
             fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
-            color = if (isPeriod) Color.White else Color.Black
+            color = baseTextColor
         )
         
         if (isToday) {
@@ -287,16 +372,30 @@ fun CalendarLegend() {
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE91E63)
             )
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             LegendItem(
                 color = Color(0xFFE91E63),
                 label = "День менструации"
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
+            LegendItem(
+                color = Color(0xFFA5D6A7),
+                label = "Фертильное окно"
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LegendItem(
+                color = Color(0xFFFFC107),
+                label = "Овуляция"
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             LegendItem(
                 color = Color(0xFF4CAF50),
                 label = "Сегодня (зелёное свечение)"

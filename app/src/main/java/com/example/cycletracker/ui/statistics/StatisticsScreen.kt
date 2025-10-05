@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.*
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
+import kotlinx.coroutines.launch
 import java.time.Period
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
@@ -31,6 +35,10 @@ import kotlin.math.roundToInt
 @Composable
 fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     val cycles by viewModel.cycles.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var exportResult by remember { mutableStateOf<StatisticsExporter.ExportResult?>(null) }
+    var showShareSheet by remember { mutableStateOf(false) }
     
     // Calculate statistics
     val stats = remember(cycles) {
@@ -43,7 +51,20 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 title = { Text("Статистика") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Назад")
+                    }
+                },
+                actions = {
+                    if (cycles.isNotEmpty()) {
+                        IconButton(onClick = {
+                            scope.launch {
+                                val result = StatisticsExporter.export(context, cycles, stats)
+                                exportResult = result
+                                showShareSheet = true
+                            }
+                        }) {
+                            Icon(Icons.Default.Download, contentDescription = "Сохранить PDF", tint = Color.White)
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -127,6 +148,17 @@ fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                     regularity = stats.regularity
                 )
             }
+        }
+    }
+    if (showShareSheet && exportResult != null) {
+        LaunchedEffect(exportResult) {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/pdf"
+                putExtra(Intent.EXTRA_STREAM, exportResult!!.uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            context.startActivity(Intent.createChooser(intent, "Поделиться отчётом"))
+            showShareSheet = false
         }
     }
 }

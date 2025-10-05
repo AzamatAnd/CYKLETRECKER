@@ -4,11 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,7 +36,8 @@ fun HomeScreen(
     onNavigateToAssistant: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToMood: () -> Unit = {},
-    onNavigateToMeds: () -> Unit = {}
+    onNavigateToMeds: () -> Unit = {},
+    onNavigateToPhases: () -> Unit = {}
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
@@ -118,6 +120,21 @@ fun HomeScreen(
             
             Spacer(modifier = Modifier.height(12.dp))
             
+            // Phases button
+            Button(
+                onClick = onNavigateToPhases,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF6F61)
+                )
+            ) {
+                Icon(Icons.Default.Spa, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Фазы цикла", color = Color.White, fontSize = 16.sp)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             // Notes button
             Button(
                 onClick = onNavigateToNotes,
