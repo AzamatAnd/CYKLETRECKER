@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -224,18 +225,19 @@ fun MoodTrendChart(
         }
         
         // Рисуем линию настроения
-        drawPath(
-            path = androidx.compose.graphics.Path().apply {
-                if (points.isNotEmpty()) {
-                    moveTo(points.first().x, points.first().y)
-                    points.drop(1).forEach { point ->
-                        lineTo(point.x, point.y)
-                    }
+        if (points.isNotEmpty()) {
+            val path = Path().apply {
+                moveTo(points.first().x, points.first().y)
+                points.drop(1).forEach { point ->
+                    lineTo(point.x, point.y)
                 }
-            },
-            color = Color(0xFFE91E63),
-            style = Stroke(width = 4.dp.toPx(), cap = StrokeCap.Round)
-        )
+            }
+            drawPath(
+                path = path,
+                color = Color(0xFFE91E63),
+                style = Stroke(width = 4.dp.toPx(), cap = StrokeCap.Round)
+            )
+        }
         
         // Рисуем точки
         points.forEach { point ->

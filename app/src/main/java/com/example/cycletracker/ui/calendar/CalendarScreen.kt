@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
+import com.example.cycletracker.ui.components.SwipeHandler
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -77,13 +78,18 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
             )
         },
         containerColor = Color(0xFFFFF0F5)
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
-        ) {
+          ) { padding ->
+              SwipeHandler(
+                  onSwipeLeft = { currentMonth = currentMonth.plusMonths(1) },
+                  onSwipeRight = { currentMonth = currentMonth.minusMonths(1) },
+                  onSwipeUp = onNavigateBack
+              ) {
+                  Column(
+                      modifier = Modifier
+                          .fillMaxSize()
+                          .padding(padding)
+                          .padding(16.dp)
+                  ) {
             // Month navigation
             MonthNavigationBar(
                 currentMonth = currentMonth,
@@ -103,9 +109,10 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
             
             // Legend
             CalendarLegend()
-        }
-    }
-}
+                  }
+              }
+          }
+      }
 
 @Composable
 fun MonthNavigationBar(

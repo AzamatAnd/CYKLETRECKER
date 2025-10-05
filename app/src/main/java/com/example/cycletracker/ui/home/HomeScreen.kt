@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
+import com.example.cycletracker.ui.components.SwipeHandler
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -77,14 +78,20 @@ fun HomeScreen(
             }
         }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        SwipeHandler(
+            onSwipeLeft = onNavigateToCalendar,
+            onSwipeRight = onNavigateToStatistics,
+            onSwipeUp = onNavigateToTrends,
+            onSwipeDown = onNavigateToSettings
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
             Text(
                 text = "🌸 Женский календарь",
                 fontSize = 32.sp,
@@ -393,6 +400,7 @@ fun PredictionCard(
                 fontSize = 12.sp,
                 color = Color.White.copy(alpha = 0.7f)
             )
+        }
         }
     }
 }
