@@ -13,6 +13,7 @@ import com.example.cycletracker.data.CycleRepository
 import com.example.cycletracker.ui.CycleViewModel
 import com.example.cycletracker.ui.calendar.CalendarScreen
 import com.example.cycletracker.ui.home.HomeScreen
+import com.example.cycletracker.ui.statistics.StatisticsScreen
 import com.example.cycletracker.ui.theme.CycleTrackerTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,9 +35,14 @@ class MainActivity : ComponentActivity() {
                     when (currentScreen) {
                         "home" -> HomeScreen(
                             viewModel = viewModel,
-                            onNavigateToCalendar = { currentScreen = "calendar" }
+                            onNavigateToCalendar = { currentScreen = "calendar" },
+                            onNavigateToStatistics = { currentScreen = "statistics" }
                         )
                         "calendar" -> CalendarScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = "home" }
+                        )
+                        "statistics" -> StatisticsScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )

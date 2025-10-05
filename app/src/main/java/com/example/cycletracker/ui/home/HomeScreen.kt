@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +20,11 @@ import com.example.cycletracker.ui.CycleViewModel
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HomeScreen(viewModel: CycleViewModel, onNavigateToCalendar: () -> Unit) {
+fun HomeScreen(
+    viewModel: CycleViewModel,
+    onNavigateToCalendar: () -> Unit,
+    onNavigateToStatistics: () -> Unit
+) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
     
@@ -66,6 +71,21 @@ fun HomeScreen(viewModel: CycleViewModel, onNavigateToCalendar: () -> Unit) {
                 Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Open Calendar", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Statistics button
+            Button(
+                onClick = onNavigateToStatistics,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF9C27B0)
+                )
+            ) {
+                Icon(Icons.Default.BarChart, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("View Statistics", color = Color.White, fontSize = 16.sp)
             }
             
             Spacer(modifier = Modifier.height(24.dp))
