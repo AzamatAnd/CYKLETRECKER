@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import androidx.core.content.FileProvider
-import com.example.cycletracker.BuildConfig
 import com.example.cycletracker.R
 import com.example.cycletracker.data.Cycle
 import java.io.File
@@ -75,11 +74,8 @@ object StatisticsExporter {
         }
         pdfDocument.close()
 
-        val uri = FileProvider.getUriForFile(
-            context,
-            BuildConfig.APPLICATION_ID + ".fileprovider",
-            pdfFile
-        )
+        val authority = context.packageName + ".fileprovider"
+        val uri = FileProvider.getUriForFile(context, authority, pdfFile)
 
         return ExportResult(file = pdfFile, uri = uri)
     }

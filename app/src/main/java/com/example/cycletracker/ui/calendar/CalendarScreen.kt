@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -44,7 +46,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cycletracker.data.Cycle
 import com.example.cycletracker.data.Cycle
 import com.example.cycletracker.ui.CycleViewModel
 import java.time.LocalDate
@@ -231,7 +232,7 @@ private data class CalendarMarks(
     val ovulationDates: Set<LocalDate>
 )
 
-private fun buildCalendarMarks(cycles: List<Cycle>): CalendarMarks {
+private fun buildCalendarMarks(cycles: List<com.example.cycletracker.data.Cycle>): CalendarMarks {
     if (cycles.isEmpty()) {
         return CalendarMarks(emptySet(), emptySet(), emptySet())
     }
