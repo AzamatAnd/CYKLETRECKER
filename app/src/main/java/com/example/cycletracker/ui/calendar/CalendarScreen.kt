@@ -282,7 +282,9 @@ private fun buildDayCells(month: YearMonth): List<LocalDate?> {
     val offset = (firstDay.dayOfWeek.value + 6) % 7 // convert Monday=0
     val totalDays = month.lengthOfMonth()
 
-    val cells = MutableList(offset) { null as LocalDate? }
+    val cells = mutableListOf<LocalDate?>().apply {
+        repeat(offset) { add(null) }
+    }
     for (day in 1..totalDays) {
         cells.add(month.atDay(day))
     }
