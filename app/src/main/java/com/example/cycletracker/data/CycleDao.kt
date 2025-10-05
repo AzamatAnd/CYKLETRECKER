@@ -74,4 +74,20 @@ interface CycleDao {
     
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteNote(noteId: Long)
+    
+    // Backup/Restore methods
+    @Query("DELETE FROM cycles")
+    suspend fun deleteAllCycles()
+    
+    @Query("DELETE FROM period_days")
+    suspend fun deleteAllPeriodDays()
+    
+    @Query("DELETE FROM mood_entries")
+    suspend fun deleteAllMoodEntries()
+    
+    @Query("DELETE FROM medications")
+    suspend fun deleteAllMedications()
+    
+    @Query("DELETE FROM notes")
+    suspend fun deleteAllNotes()
 }

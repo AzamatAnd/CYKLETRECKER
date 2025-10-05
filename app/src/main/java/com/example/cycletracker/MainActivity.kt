@@ -23,10 +23,11 @@ import com.example.cycletracker.ui.meds.MedicationsScreen
 import com.example.cycletracker.ui.phases.PhasesScreen
 import com.example.cycletracker.ui.trends.TrendsScreen
 import com.example.cycletracker.ui.goals.GoalsScreen
+import com.example.cycletracker.ui.backup.BackupScreen
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
         
         val database = AppDatabase.getDatabase(applicationContext)
         val repository = CycleRepository(database.cycleDao())
@@ -52,7 +53,8 @@ class MainActivity : ComponentActivity() {
                             onNavigateToMeds = { currentScreen = "meds" },
                             onNavigateToPhases = { currentScreen = "phases" },
                             onNavigateToTrends = { currentScreen = "trends" },
-                            onNavigateToGoals = { currentScreen = "goals" }
+                            onNavigateToGoals = { currentScreen = "goals" },
+                            onNavigateToBackup = { currentScreen = "backup" }
                         )
                         "calendar" -> CalendarScreen(
                             viewModel = viewModel,
@@ -86,6 +88,9 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )
+                        "backup" -> BackupScreen(
+                            onNavigateBack = { currentScreen = "home" }
+                        )
                         "mood" -> MoodScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
@@ -93,10 +98,10 @@ class MainActivity : ComponentActivity() {
                         "meds" -> MedicationsScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
-                        )
-                    }
-                }
-            }
-        }
+				)
+			}
+		}
+	}
+}
     }
 }
