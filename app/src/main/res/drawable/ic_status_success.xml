@@ -3,28 +3,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    
-    <!-- РЈСЃРїРµС… - РіР°Р»РѕС‡РєР° РІ РєСЂСѓРіРµ -->
-    <circle
-        android:fillColor="#4CAF50"
-        android:cx="12"
-        android:cy="12"
-        android:r="10"/>
-    
-    <!-- Р“Р°Р»РѕС‡РєР° -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M9,12L11,14L15,10"/>
-    
-    <!-- Р”РµРєРѕСЂР°С‚РёРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ -->
-    <circle
-        android:fillColor="#81C784"
-        android:cx="12"
-        android:cy="12"
-        android:r="6"/>
-    
-    <!-- Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РіР°Р»РѕС‡РєР° -->
     <path
         android:fillColor="#4CAF50"
-        android:pathData="M10,12L11.5,13.5L14,11"/>
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM10,17l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z"/>
 </vector>

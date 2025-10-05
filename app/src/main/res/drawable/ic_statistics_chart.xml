@@ -3,76 +3,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    
-    <!-- Р“СЂР°С„РёРє СЃС‚Р°С‚РёСЃС‚РёРєРё -->
     <path
-        android:fillColor="#4CAF50"
-        android:pathData="M3,20L3,4L5,4L5,20L3,20Z"/>
-    <path
-        android:fillColor="#4CAF50"
-        android:pathData="M3,20L21,20L21,18L3,18L3,20Z"/>
-    
-    <!-- РЎС‚РѕР»Р±С†С‹ РіСЂР°С„РёРєР° -->
-    <rect
-        android:fillColor="#2196F3"
-        android:x="6"
-        android:y="16"
-        android:width="2"
-        android:height="4"/>
-    <rect
-        android:fillColor="#2196F3"
-        android:x="9"
-        android:y="12"
-        android:width="2"
-        android:height="8"/>
-    <rect
-        android:fillColor="#2196F3"
-        android:x="12"
-        android:y="14"
-        android:width="2"
-        android:height="6"/>
-    <rect
-        android:fillColor="#2196F3"
-        android:x="15"
-        android:y="10"
-        android:width="2"
-        android:height="10"/>
-    <rect
-        android:fillColor="#2196F3"
-        android:x="18"
-        android:y="8"
-        android:width="2"
-        android:height="12"/>
-    
-    <!-- Р›РёРЅРёСЏ С‚СЂРµРЅРґР° -->
-    <path
-        android:fillColor="#FF5722"
-        android:pathData="M6,16L9,12L12,14L15,10L18,8"/>
-    
-    <!-- РўРѕС‡РєРё РґР°РЅРЅС‹С… -->
-    <circle
-        android:fillColor="#FF5722"
-        android:cx="6"
-        android:cy="16"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FF5722"
-        android:cx="9"
-        android:cy="12"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FF5722"
-        android:cx="12"
-        android:cy="14"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FF5722"
-        android:cx="15"
-        android:cy="10"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FF5722"
-        android:cx="18"
-        android:cy="8"
-        android:r="1"/>
+        android:fillColor="#9C27B0"
+        android:pathData="M5,9.2h3V19H5zM10.6,5h2.8v14h-2.8zM16.2,13H19v6h-2.8z"/>
 </vector>

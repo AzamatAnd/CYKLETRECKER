@@ -3,61 +3,10 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    
-    <!-- Р›РѕРіРѕС‚РёРї CycleTracker - СЃС‚РёР»РёР·РѕРІР°РЅРЅС‹Р№ С†РёРєР» -->
-    <circle
+    <path
         android:fillColor="#E91E63"
-        android:cx="12"
-        android:cy="12"
-        android:r="10"/>
-    
-    <!-- Р’РЅСѓС‚СЂРµРЅРЅРёР№ РєСЂСѓРі -->
-    <circle
-        android:fillColor="#F8BBD9"
-        android:cx="12"
-        android:cy="12"
-        android:r="6"/>
-    
-    <!-- Р¦РµРЅС‚СЂР°Р»СЊРЅР°СЏ С‚РѕС‡РєР° -->
-    <circle
-        android:fillColor="#E91E63"
-        android:cx="12"
-        android:cy="12"
-        android:r="2"/>
-    
-    <!-- Р¤Р°Р·С‹ С†РёРєР»Р° -->
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8z"/>
     <path
-        android:fillColor="#FF6B9D"
-        android:pathData="M12,2C12,2 16,6 12,10C8,6 12,2 12,2Z"/>
-    <path
-        android:fillColor="#FF6B9D"
-        android:pathData="M12,14C12,14 16,18 12,22C8,18 12,14 12,14Z"/>
-    <path
-        android:fillColor="#FF6B9D"
-        android:pathData="M2,12C2,12 6,8 10,12C6,16 2,12 2,12Z"/>
-    <path
-        android:fillColor="#FF6B9D"
-        android:pathData="M22,12C22,12 18,16 14,12C18,8 22,12 22,12Z"/>
-    
-    <!-- Р”РµРєРѕСЂР°С‚РёРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ -->
-    <circle
-        android:fillColor="#FFD700"
-        android:cx="6"
-        android:cy="6"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FFD700"
-        android:cx="18"
-        android:cy="6"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FFD700"
-        android:cx="6"
-        android:cy="18"
-        android:r="1"/>
-    <circle
-        android:fillColor="#FFD700"
-        android:cx="18"
-        android:cy="18"
-        android:r="1"/>
+        android:fillColor="#F06292"
+        android:pathData="M12,6L12,12L16,12C16,14.21 14.21,16 12,16C9.79,16 8,14.21 8,12C8,9.79 9.79,8 12,8L12,6z"/>
 </vector>

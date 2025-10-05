@@ -3,36 +3,10 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    
-    <!-- РЈСЃС‚Р°Р»РѕСЃС‚СЊ - СЃРѕРЅРЅР°СЏ РіРѕР»РѕРІР° СЃ ZZZ -->
-    <circle
+    <path
         android:fillColor="#9E9E9E"
-        android:cx="12"
-        android:cy="12"
-        android:r="8"/>
-    
-    <!-- Р›РёС†Рѕ -->
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8z"/>
     <path
-        android:fillColor="#757575"
-        android:pathData="M9,10C9,10 9.5,9.5 10,10C10.5,10.5 10,11 9,10Z"/>
-    <path
-        android:fillColor="#757575"
-        android:pathData="M14,10C14,10 14.5,9.5 15,10C15.5,10.5 15,11 14,10Z"/>
-    <path
-        android:fillColor="#757575"
-        android:pathData="M9,15C9,15 12,17 15,15"/>
-    
-    <!-- ZZZ -->
-    <path
-        android:fillColor="#FFC107"
-        android:pathData="M4,4L6,4L4,6L6,6"/>
-    <path
-        android:fillColor="#FFC107"
-        android:pathData="M18,6L20,6L18,8L20,8"/>
-    <path
-        android:fillColor="#FFC107"
-        android:pathData="M2,8L4,8L2,10L4,10"/>
-    <path
-        android:fillColor="#FFC107"
-        android:pathData="M20,10L22,10L20,12L22,12"/>
+        android:fillColor="#9E9E9E"
+        android:pathData="M8,10h2v2H8zM14,10h2v2h-2zM7,14h10v2H7z"/>
 </vector>
