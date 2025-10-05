@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,7 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 fun HomeScreen(
     viewModel: CycleViewModel,
     onNavigateToCalendar: () -> Unit,
-    onNavigateToStatistics: () -> Unit
+    onNavigateToStatistics: () -> Unit,
+    onNavigateToNotes: () -> Unit
 ) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
@@ -106,6 +108,21 @@ fun HomeScreen(
                 Icon(Icons.Default.BarChart, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Статистика", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Notes button
+            Button(
+                onClick = onNavigateToNotes,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF9800)
+                )
+            ) {
+                Icon(Icons.Default.Edit, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Заметки и симптомы", color = Color.White, fontSize = 16.sp)
             }
             
             Spacer(modifier = Modifier.height(24.dp))
