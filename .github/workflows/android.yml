@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -38,28 +40,17 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build APKs (clean, no cache)
-        run: |
-          ./gradlew --stop || true
-          rm -rf ~/.gradle/caches ~/.gradle/wrapper || true
-          ./gradlew clean assembleDebug -x test --no-build-cache
+      - name: Build with Gradle
+        run: ./gradlew build
 
-      - name: Diagnose merged resources
-        run: |
-          echo "Merged values referencing Theme.Material3.DayNight:"
-          find app/build -path "*/merged_res/*/values/values.xml" -type f -print -exec grep -n "Theme.Material3.DayNight" {} \; || true
-          echo "Dump last values.xml files:"
-          LAST_FILES=$(find app/build -path "*/merged_res/*/values/values.xml" -type f | tail -n 5)
-          for f in $LAST_FILES; do echo "===== $f ====="; sed -n '1,1200p' "$f" | tail -n 200; done || true
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Lint check
+        run: ./gradlew lintDebug
 
       - name: Build release APK
-        run: ./gradlew assembleRelease -x test --no-build-cache
-
-      - name: Prepare apk folder
-        run: |
-          mkdir -p apk
-          cp app/build/outputs/apk/debug/*.apk apk/app-debug.apk || true
-          cp app/build/outputs/apk/release/*.apk apk/app-release.apk || true
+        run: ./gradlew assembleRelease
 
       - name: Upload debug APK (artifact)
         uses: actions/upload-artifact@v4
@@ -74,6 +65,37 @@ jobs:
           name: app-release-apk
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: ignore
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: app/build/reports/tests/
+          if-no-files-found: ignore
+
+      - name: Upload lint results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lint-results
+          path: app/build/reports/lint/
+          if-no-files-found: ignore
+
+      - name: Create Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/mapping/release/mapping.txt
+          body: |
+            Автоматически собранный релиз версии ${{ github.ref_name }}
+            
+            ### Изменения:
+            - Сборка выполнена через GitHub Actions
+            - Подписано release-ключом
+            - Включено сжатие и обфускация
 
       # APKs are uploaded as artifacts, no need to commit to repo
 
