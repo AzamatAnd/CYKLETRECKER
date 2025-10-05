@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.example.cycletracker.data.AppDatabase
 import com.example.cycletracker.data.CycleRepository
 import com.example.cycletracker.ui.CycleViewModel
+import com.example.cycletracker.ui.assistant.AssistantScreen
 import com.example.cycletracker.ui.calendar.CalendarScreen
 import com.example.cycletracker.ui.home.HomeScreen
 import com.example.cycletracker.ui.notes.NotesScreen
@@ -38,7 +39,8 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel,
                             onNavigateToCalendar = { currentScreen = "calendar" },
                             onNavigateToStatistics = { currentScreen = "statistics" },
-                            onNavigateToNotes = { currentScreen = "notes" }
+                            onNavigateToNotes = { currentScreen = "notes" },
+                            onNavigateToAssistant = { currentScreen = "assistant" }
                         )
                         "calendar" -> CalendarScreen(
                             viewModel = viewModel,
@@ -49,6 +51,10 @@ class MainActivity : ComponentActivity() {
                             onNavigateBack = { currentScreen = "home" }
                         )
                         "notes" -> NotesScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = "home" }
+                        )
+                        "assistant" -> AssistantScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )
