@@ -43,8 +43,14 @@ android {
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro"
 			)
-			// Optional signing via gradle.properties if provided
-			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+			// Используем release-подпись только если заданы все поля, иначе fallback на debug
+			val releaseConfig = signingConfigs.getByName("release")
+			signingConfig = if (releaseConfig.storeFile != null) {
+				releaseConfig
+			} else {
+				logger.warn("Release keystore не задан — используем debug signingConfig")
+				signingConfigs.getByName("debug")
+			}
 		}
 		debug {
 			isMinifyEnabled = false
