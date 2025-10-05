@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
@@ -155,14 +157,18 @@ fun CalendarGrid(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun").forEach { day ->
-                    Text(
-                        text = day,
+                    Box(
                         modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Gray
-                    )
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = day,
+                            textAlign = TextAlign.Center,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Gray
+                        )
+                    }
                 }
             }
             
@@ -202,7 +208,7 @@ fun CalendarGrid(
 }
 
 @Composable
-fun DayCell(
+fun RowScope.DayCell(
     date: LocalDate,
     isPeriod: Boolean,
     isToday: Boolean,
@@ -211,7 +217,8 @@ fun DayCell(
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.9f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "scale"
     )
     
     val backgroundColor = when {
