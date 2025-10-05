@@ -98,8 +98,9 @@ class MainActivity : ComponentActivity() {
                         "meds" -> MedicationsScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
-				)
-			}
-		}
-	}
-}
+                        )
+                    }
+                }
+            }
+        }
+    }
