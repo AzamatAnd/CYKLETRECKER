@@ -8,8 +8,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -204,10 +205,11 @@ fun CalendarGrid(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     repeat(7) { _ ->
-                        Box(
+                        BoxWithConstraints(
                             modifier = Modifier
                                 .weight(1f)
                                 .aspectRatio(1f)
+                                .padding(4.dp)
                         ) {
                             if (dayCounter in 1..daysInMonth) {
                                 val date = currentMonth.atDay(dayCounter)
@@ -217,6 +219,7 @@ fun CalendarGrid(
                                     isFertile = fertileDates.contains(date) && !periodDates.contains(date),
                                     isOvulation = ovulationDates.contains(date),
                                     isToday = date == LocalDate.now(),
+                                    modifier = Modifier.fillMaxSize(),
                                     onClick = { viewModel.togglePeriodDay(date) }
                                 )
                             }
@@ -283,7 +286,7 @@ private fun buildCalendarMarks(cycles: List<com.example.cycletracker.data.Cycle>
 }
 
 @Composable
-fun RowScope.DayCell(
+fun DayCell(
     date: LocalDate,
     isPeriod: Boolean,
     isFertile: Boolean,
