@@ -7,15 +7,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,8 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.weight
-import com.example.cycletracker.ui.CycleViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -173,64 +173,51 @@ fun CalendarGrid(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEach { day ->
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = day,
-                            textAlign = TextAlign.Center,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray
-                        )
-                    }
+                    Text(
+                        text = day,
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Gray
+                    )
                 }
             }
             
             Spacer(modifier = Modifier.height(12.dp))
             
-            // Calendar days
-            val firstDayOfMonth = currentMonth.atDay(1)
-            val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value - 1
-            val daysInMonth = currentMonth.lengthOfMonth()
-            
-            var dayCounter = 1 - firstDayOfWeek
-            
-            repeat(6) { week ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    repeat(7) { _ ->
-                        BoxWithConstraints(
+            val dayCells = remember(currentMonth) { buildDayCells(currentMonth) }
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(7),
+                modifier = Modifier.fillMaxWidth(),
+                userScrollEnabled = false,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(dayCells) { maybeDate ->
+                    if (maybeDate != null) {
+                        DayCell(
+                            date = maybeDate,
+                            isPeriod = periodDates.contains(maybeDate),
+                            isFertile = fertileDates.contains(maybeDate) && !periodDates.contains(maybeDate),
+                            isOvulation = ovulationDates.contains(maybeDate),
+                            isToday = maybeDate == LocalDate.now(),
                             modifier = Modifier
-                                .weight(1f)
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .padding(4.dp),
+                            onClick = { viewModel.togglePeriodDay(maybeDate) }
+                        )
+                    } else {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
                                 .padding(4.dp)
-                        ) {
-                            val size = minWidth.coerceAtMost(maxHeight)
-                            Box(
-                                modifier = Modifier
-                                    .width(size)
-                                    .height(size)
-                            ) {
-                                if (dayCounter in 1..daysInMonth) {
-                                    val date = currentMonth.atDay(dayCounter)
-                                    DayCell(
-                                        date = date,
-                                        isPeriod = periodDates.contains(date),
-                                        isFertile = fertileDates.contains(date) && !periodDates.contains(date),
-                                        isOvulation = ovulationDates.contains(date),
-                                        isToday = date == LocalDate.now(),
-                                        onClick = { viewModel.togglePeriodDay(date) }
-                                    )
-                                }
-                            }
-                        }
-                        dayCounter++
+                        )
                     }
                 }
-                if (week < 5) Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
@@ -288,6 +275,21 @@ private fun buildCalendarMarks(cycles: List<com.example.cycletracker.data.Cycle>
     return CalendarMarks(periodDates, fertileDates, ovulationDates)
 }
 
+private fun buildDayCells(month: YearMonth): List<LocalDate?> {
+    val firstDay = month.atDay(1)
+    val offset = (firstDay.dayOfWeek.value + 6) % 7 // convert Monday=0
+    val totalDays = month.lengthOfMonth()
+
+    val cells = MutableList(offset) { null as LocalDate? }
+    for (day in 1..totalDays) {
+        cells.add(month.atDay(day))
+    }
+    while (cells.size % 7 != 0) {
+        cells.add(null)
+    }
+    return cells
+}
+
 @Composable
 fun DayCell(
     date: LocalDate,
@@ -320,20 +322,18 @@ fun DayCell(
         )
     }
     
-	Box(
-		modifier = modifier
-			.aspectRatio(1f)
-            .padding(4.dp)
+    Box(
+        modifier = modifier
             .scale(scale)
-			.clip(CircleShape)
+            .clip(CircleShape)
             .background(backgroundBrush)
             .clickable {
                 isPressed = true
                 onClick()
                 isPressed = false
             },
-		contentAlignment = Alignment.Center
-	) {
+        contentAlignment = Alignment.Center
+    ) {
         val baseTextColor = when {
             isPeriod -> Color.White
             isOvulation -> Color(0xFF3E2723)
