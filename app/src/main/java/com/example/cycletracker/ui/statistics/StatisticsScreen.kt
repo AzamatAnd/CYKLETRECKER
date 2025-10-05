@@ -153,13 +153,13 @@ fun StatCard(
     
     Card(
         modifier = modifier.height(140.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(gradient.copy(alpha = 0.1f))
+                .background(gradient)
                 .padding(16.dp)
         ) {
             Column(
@@ -169,7 +169,8 @@ fun StatCard(
                 Text(
                     text = title,
                     fontSize = 12.sp,
-                    color = Color.Gray
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.9f)
                 )
                 
                 Column {
@@ -177,12 +178,13 @@ fun StatCard(
                         text = value,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE91E63)
+                        color = Color.White
                     )
                     Text(
                         text = unit,
                         fontSize = 12.sp,
-                        color = Color.Gray
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White.copy(alpha = 0.85f)
                     )
                 }
                 
@@ -191,13 +193,13 @@ fun StatCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
-                        .background(Color.Gray.copy(alpha = 0.2f))
+                        .background(Color.White.copy(alpha = 0.3f))
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(animatedValue)
                             .fillMaxHeight()
-                            .background(gradient)
+                            .background(Color.White)
                     )
                 }
             }
@@ -331,13 +333,13 @@ fun BigStatCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(gradient.copy(alpha = 0.1f))
+                .background(gradient)
                 .padding(24.dp)
         ) {
             Column(
@@ -347,19 +349,21 @@ fun BigStatCard(
                 Text(
                     text = title,
                     fontSize = 18.sp,
-                    color = Color.Gray
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.95f)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = value,
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFFFF9800)
+                    color = Color.White
                 )
                 Text(
                     text = subtitle,
                     fontSize = 14.sp,
-                    color = Color.Gray
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.9f)
                 )
             }
         }
