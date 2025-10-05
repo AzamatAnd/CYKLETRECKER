@@ -13,9 +13,10 @@ import androidx.room.TypeConverters
         MoodEntry::class,
         MoodSettings::class,
         Medication::class,
-        MedicationIntake::class
+        MedicationIntake::class,
+        Note::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

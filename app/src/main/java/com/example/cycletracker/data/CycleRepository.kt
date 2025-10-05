@@ -53,4 +53,11 @@ class CycleRepository(private val cycleDao: CycleDao) {
 
     suspend fun markMedicationIntake(id: Long, taken: Boolean, takenAt: Long?) =
         cycleDao.markMedicationIntake(id, taken, takenAt)
+    
+    // Notes
+    fun getAllNotes(): Flow<List<Note>> = cycleDao.getAllNotes()
+    
+    suspend fun insertNote(note: Note): Long = cycleDao.insertNote(note)
+    
+    suspend fun deleteNote(noteId: Long) = cycleDao.deleteNote(noteId)
 }

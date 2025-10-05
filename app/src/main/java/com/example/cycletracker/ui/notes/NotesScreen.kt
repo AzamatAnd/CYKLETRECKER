@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cycletracker.ui.CycleViewModel
+import com.example.cycletracker.data.Note
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -110,8 +111,13 @@ fun NotesScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     if (showAddDialog) {
         AddNoteDialog(
             onDismiss = { showAddDialog = false },
-            onAdd = { 
-                // TODO: Add note logic
+            onAdd = { noteData ->
+                val note = Note(
+                    date = LocalDate.now(),
+                    title = noteData.title,
+                    content = noteData.content
+                )
+                viewModel.addNote(note)
                 showAddDialog = false
             }
         )
@@ -352,7 +358,7 @@ fun NoteCard(note: NoteData) {
                 )
             }
             
-            IconButton(onClick = { /* TODO: Delete */ }) {
+            IconButton(onClick = { viewModel.deleteNote(note.id) }) {
                 Icon(
                     Icons.Default.Delete,
                     "Удалить",
@@ -368,7 +374,7 @@ fun NoteCard(note: NoteData) {
 @Composable
 fun AddNoteDialog(
     onDismiss: () -> Unit,
-    onAdd: (String) -> Unit
+    onAdd: (NoteData) -> Unit
 ) {
     var noteText by remember { mutableStateOf("") }
     var selectedMood by remember { mutableStateOf<String?>(null) }
@@ -460,7 +466,13 @@ fun AddNoteDialog(
                     Spacer(modifier = Modifier.width(8.dp))
                     
                     Button(
-                        onClick = { onAdd(noteText) },
+                        onClick = { 
+                            onAdd(NoteData(
+                                title = "Запись",
+                                content = noteText,
+                                color = Color(0xFFE91E63)
+                            ))
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFE91E63)
                         ),
@@ -481,7 +493,7 @@ data class SymptomItem(
 )
 
 data class NoteData(
-    val text: String,
-    val time: String,
+    val title: String,
+    val content: String,
     val color: Color
 )

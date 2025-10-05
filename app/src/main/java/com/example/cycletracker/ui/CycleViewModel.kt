@@ -79,4 +79,16 @@ class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
             )
         }
     }
+    
+    fun addNote(note: com.example.cycletracker.data.Note) {
+        viewModelScope.launch {
+            repository.insertNote(note)
+        }
+    }
+    
+    fun deleteNote(noteId: Long) {
+        viewModelScope.launch {
+            repository.deleteNote(noteId)
+        }
+    }
 }

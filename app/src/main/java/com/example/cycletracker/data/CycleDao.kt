@@ -64,4 +64,14 @@ interface CycleDao {
 
     @Query("UPDATE medication_intakes SET taken = :taken, takenAtEpochMs = :takenAt WHERE id = :id")
     suspend fun markMedicationIntake(id: Long, taken: Boolean, takenAt: Long?)
+    
+    // Notes
+    @Query("SELECT * FROM notes ORDER BY date DESC")
+    fun getAllNotes(): Flow<List<Note>>
+    
+    @Insert
+    suspend fun insertNote(note: Note): Long
+    
+    @Query("DELETE FROM notes WHERE id = :noteId")
+    suspend fun deleteNote(noteId: Long)
 }
