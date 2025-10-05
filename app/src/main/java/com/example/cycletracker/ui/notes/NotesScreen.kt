@@ -105,7 +105,7 @@ fun NotesScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
             Spacer(modifier = Modifier.height(12.dp))
             
             // Notes list
-            NotesList(notes)
+            NotesList(notes, viewModel)
         }
     }
     
@@ -266,7 +266,7 @@ fun QuickSymptomButton(
 }
 
 @Composable
-fun NotesList(notes: List<Note>) {
+fun NotesList(notes: List<Note>, viewModel: CycleViewModel) {
     
     if (notes.isEmpty()) {
         Card(
@@ -302,14 +302,14 @@ fun NotesList(notes: List<Note>) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(notes) { note ->
-                NoteCard(note)
+                NoteCard(note, viewModel)
             }
         }
     }
 }
 
 @Composable
-fun NoteCard(note: Note) {
+fun NoteCard(note: Note, viewModel: CycleViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
     
     Card(
