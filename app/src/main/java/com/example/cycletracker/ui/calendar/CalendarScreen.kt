@@ -33,14 +33,14 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text("Calendar") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back")
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFE91E63),
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
