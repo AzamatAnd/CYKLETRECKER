@@ -10,6 +10,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -41,7 +44,7 @@ fun NotesScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 title = { Text("Заметки и симптомы") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Назад")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -134,7 +137,7 @@ fun DateSelectorCard(
         ) {
             IconButton(onClick = { onDateChange(selectedDate.minusDays(1)) }) {
                 Icon(
-                    Icons.Default.KeyboardArrowLeft,
+                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     "Предыдущий день",
                     tint = Color(0xFFE91E63)
                 )
@@ -160,7 +163,7 @@ fun DateSelectorCard(
             
             IconButton(onClick = { onDateChange(selectedDate.plusDays(1)) }) {
                 Icon(
-                    Icons.Default.KeyboardArrowRight,
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     "Следующий день",
                     tint = Color(0xFFE91E63)
                 )

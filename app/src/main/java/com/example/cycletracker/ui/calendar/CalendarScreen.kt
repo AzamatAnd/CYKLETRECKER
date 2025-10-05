@@ -6,8 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +39,7 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 title = { Text("Календарь") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Назад")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -100,7 +100,7 @@ fun MonthNavigationBar(
         ) {
             IconButton(onClick = onPreviousMonth) {
                 Icon(
-                    Icons.Default.ArrowBack,
+                    Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Previous",
                     tint = Color(0xFFE91E63)
                 )
@@ -115,7 +115,7 @@ fun MonthNavigationBar(
             
             IconButton(onClick = onNextMonth) {
                 Icon(
-                    Icons.Default.ArrowForward,
+                    Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = "Next",
                     tint = Color(0xFFE91E63)
                 )

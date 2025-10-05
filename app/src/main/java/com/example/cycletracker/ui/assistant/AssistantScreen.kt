@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -43,7 +45,7 @@ fun AssistantScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
                 title = { Text("🤖 Умный помощник") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Назад")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -402,7 +404,7 @@ data class Recommendation(
 fun getPersonalizedInsights(): List<Insight> {
     return listOf(
         Insight(
-            icon = Icons.Default.TrendingUp,
+            icon = Icons.AutoMirrored.Filled.TrendingUp,
             title = "Паттерн обнаружен",
             description = "Вы часто чувствуете усталость на 3-4 день цикла. Это нормально из-за гормональных изменений.",
             tip = "Планируйте меньше дел в эти дни и больше отдыхайте",
