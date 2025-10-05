@@ -73,14 +73,14 @@ class BackupManager(private val context: Context) {
                     put("startDate", cycle.startDate.toString())
                     put("endDate", cycle.endDate?.toString())
                     put("cycleLength", cycle.cycleLength)
-                    put("notes", cycle.notes ?: "")
+                    put("notes", "")
                 }
             })
             put("periodDays", backupData.periodDays.map { day ->
                 JSONObject().apply {
                     put("date", day.date.toString())
                     put("flow", day.flow)
-                    put("symptoms", day.symptoms ?: "")
+                    put("symptoms", "")
                 }
             })
             put("moodEntries", backupData.moodEntries.map { entry ->
@@ -90,7 +90,7 @@ class BackupManager(private val context: Context) {
                     put("score", entry.score)
                     put("energy", entry.energy)
                     put("sleepHours", entry.sleepHours)
-                    put("notes", entry.notes ?: "")
+                    put("notes", entry.note)
                 }
             })
             put("medications", backupData.medications.map { med ->
@@ -98,10 +98,10 @@ class BackupManager(private val context: Context) {
                     put("id", med.id)
                     put("name", med.name)
                     put("dosage", med.dosage)
-                    put("frequency", med.frequency ?: "")
-                    put("startDate", med.startDate.toString())
+                    put("frequency", med.timesCsv)
+                    put("startDate", med.startDate?.toString() ?: "")
                     put("endDate", med.endDate?.toString())
-                    put("isActive", med.isActive ?: true)
+                    put("isActive", med.endDate == null)
                 }
             })
             put("notes", backupData.notes.map { note ->
@@ -135,7 +135,7 @@ class BackupManager(private val context: Context) {
                     startDate = LocalDate.parse(cycleJson.getString("startDate")),
                     endDate = cycleJson.optString("endDate")?.let { LocalDate.parse(it) },
                     cycleLength = cycleJson.optInt("cycleLength").takeIf { it > 0 },
-                    notes = cycleJson.optString("notes").takeIf { it.isNotEmpty() }
+                    notes = null
                 )
             }
         }
@@ -145,8 +145,7 @@ class BackupManager(private val context: Context) {
                 val dayJson = array.getJSONObject(i)
                 PeriodDay(
                     date = LocalDate.parse(dayJson.getString("date")),
-                    flow = dayJson.optInt("flow"),
-                    symptoms = dayJson.optString("symptoms").takeIf { it.isNotEmpty() }
+                    flow = dayJson.optString("flow", "medium")
                 )
             }
         }
@@ -160,7 +159,7 @@ class BackupManager(private val context: Context) {
                     score = entryJson.getInt("score"),
                     energy = entryJson.optInt("energy").takeIf { it > 0 },
                     sleepHours = entryJson.optDouble("sleepHours").toFloat().takeIf { it > 0 },
-                    notes = entryJson.optString("notes").takeIf { it.isNotEmpty() }
+                    note = entryJson.optString("notes")
                 )
             }
         }
@@ -172,10 +171,10 @@ class BackupManager(private val context: Context) {
                     id = medJson.getLong("id"),
                     name = medJson.getString("name"),
                     dosage = medJson.getString("dosage"),
-                    frequency = medJson.optString("frequency").takeIf { it.isNotEmpty() } ?: "",
-                    startDate = LocalDate.parse(medJson.getString("startDate")),
+                    timesCsv = medJson.optString("frequency"),
+                    startDate = medJson.optString("startDate")?.let { LocalDate.parse(it) },
                     endDate = medJson.optString("endDate")?.let { LocalDate.parse(it) },
-                    isActive = medJson.optBoolean("isActive", true)
+                    notes = ""
                 )
             }
         }

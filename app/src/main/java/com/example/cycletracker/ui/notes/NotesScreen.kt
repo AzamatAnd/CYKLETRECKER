@@ -353,7 +353,7 @@ fun NoteCard(note: NoteData) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = note.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                    text = note.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
