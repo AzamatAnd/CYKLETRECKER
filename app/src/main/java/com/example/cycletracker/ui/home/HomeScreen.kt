@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,7 +19,7 @@ import com.example.cycletracker.ui.CycleViewModel
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HomeScreen(viewModel: CycleViewModel) {
+fun HomeScreen(viewModel: CycleViewModel, onNavigateToCalendar: () -> Unit) {
     val cycles by viewModel.cycles.collectAsState()
     val lastCycle = cycles.firstOrNull()
     
@@ -52,7 +53,22 @@ fun HomeScreen(viewModel: CycleViewModel) {
                 textAlign = TextAlign.Center
             )
             
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Calendar button
+            Button(
+                onClick = onNavigateToCalendar,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE91E63)
+                )
+            ) {
+                Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Open Calendar", color = Color.White, fontSize = 16.sp)
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
             
             if (lastCycle != null) {
                 Card(
