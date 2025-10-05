@@ -38,6 +38,7 @@ import java.util.Locale
 fun NotesScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var showAddDialog by remember { mutableStateOf(false) }
+    val notes by viewModel.getAllNotes().collectAsState(initial = emptyList())
     
     Scaffold(
         topBar = {
@@ -345,14 +346,14 @@ fun NoteCard(note: NoteData) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = note.text,
+                    text = note.content,
                     fontSize = 14.sp,
                     color = Color.Black,
                     maxLines = if (isExpanded) Int.MAX_VALUE else 2
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = note.time,
+                    text = note.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                     fontSize = 12.sp,
                     color = Color.Gray
                 )

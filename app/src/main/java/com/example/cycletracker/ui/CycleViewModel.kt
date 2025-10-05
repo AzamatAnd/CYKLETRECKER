@@ -91,4 +91,6 @@ class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
             repository.deleteNote(noteId)
         }
     }
+    
+    fun getAllNotes() = repository.getAllNotes()
 }
