@@ -282,7 +282,7 @@ fun CalendarLegend() {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Legend",
+                text = "Легенда",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE91E63)
