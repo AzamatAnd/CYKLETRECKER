@@ -1,348 +1,370 @@
 package com.example.cycletracker.ui.statistics
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.cycletracker.data.CycleEntity
-import com.example.cycletracker.data.SymptomEntity
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import com.example.cycletracker.ui.CycleViewModel
+import java.time.Period
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StatisticsScreen(
-    cycles: List<CycleEntity>,
-    symptoms: List<SymptomEntity>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Text(
-                text = "Статистика",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        
-        item {
-            CycleStatisticsCard(cycles = cycles)
-        }
-        
-        item {
-            SymptomStatisticsCard(symptoms = symptoms)
-        }
-        
-        item {
-            RegularityCard(cycles = cycles)
-        }
-        
-        item {
-            RecentTrendsCard(cycles = cycles, symptoms = symptoms)
-        }
+fun StatisticsScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
+    val cycles by viewModel.cycles.collectAsState()
+    
+    // Calculate statistics
+    val stats = remember(cycles) {
+        calculateStatistics(cycles)
     }
-}
-
-@Composable
-private fun CycleStatisticsCard(
-    cycles: List<CycleEntity>,
-    modifier: Modifier = Modifier
-) {
-    val completedCycles = cycles.filter { it.endDate != null }
-    val avgLength = if (completedCycles.isNotEmpty()) {
-        completedCycles.map { cycle ->
-            ChronoUnit.DAYS.between(cycle.startDate, cycle.endDate!!).toInt()
-        }.average().toInt()
-    } else 0
     
-    val shortestCycle = completedCycles.minOfOrNull { cycle ->
-        ChronoUnit.DAYS.between(cycle.startDate, cycle.endDate!!).toInt()
-    } ?: 0
-    
-    val longestCycle = completedCycles.maxOfOrNull { cycle ->
-        ChronoUnit.DAYS.between(cycle.startDate, cycle.endDate!!).toInt()
-    } ?: 0
-    
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Timeline,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Статистика циклов",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                StatItem(
-                    label = "Всего циклов",
-                    value = completedCycles.size.toString(),
-                    icon = Icons.Default.Repeat
-                )
-                StatItem(
-                    label = "Средняя длина",
-                    value = if (avgLength > 0) "${avgLength} дн." else "—",
-                    icon = Icons.Default.Analytics
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                StatItem(
-                    label = "Короткий",
-                    value = if (shortestCycle > 0) "${shortestCycle} дн." else "—",
-                    icon = Icons.Default.KeyboardArrowDown
-                )
-                StatItem(
-                    label = "Длинный",
-                    value = if (longestCycle > 0) "${longestCycle} дн." else "—",
-                    icon = Icons.Default.KeyboardArrowUp
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SymptomStatisticsCard(
-    symptoms: List<SymptomEntity>,
-    modifier: Modifier = Modifier
-) {
-    val symptomCounts = symptoms.groupBy { it.type }
-        .mapValues { it.value.size }
-        .toList()
-        .sortedByDescending { it.second }
-        .take(5)
-    
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocalHospital,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Частые симптомы",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            if (symptomCounts.isEmpty()) {
-                Text(
-                    text = "Нет данных о симптомах",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            } else {
-                symptomCounts.forEach { (symptom, count) ->
-                    SymptomItem(
-                        symptom = symptom,
-                        count = count,
-                        totalSymptoms = symptoms.size
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SymptomItem(
-    symptom: String,
-    count: Int,
-    totalSymptoms: Int,
-    modifier: Modifier = Modifier
-) {
-    val percentage = if (totalSymptoms > 0) (count * 100.0 / totalSymptoms).roundToInt() else 0
-    
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = symptom,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = "$count раз",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "$percentage%",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
-private fun RegularityCard(
-    cycles: List<CycleEntity>,
-    modifier: Modifier = Modifier
-) {
-    val completedCycles = cycles.filter { it.endDate != null }
-    val regularity = calculateRegularity(completedCycles)
-    
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.TrendingUp,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Регулярность",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Text(
-                text = when {
-                    regularity >= 80 -> "Очень регулярный"
-                    regularity >= 60 -> "Регулярный"
-                    regularity >= 40 -> "Умеренно регулярный"
-                    regularity >= 20 -> "Нерегулярный"
-                    else -> "Очень нерегулярный"
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Статистика") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, "Назад")
+                    }
                 },
-                style = MaterialTheme.typography.headlineSmall,
-                color = when {
-                    regularity >= 80 -> Color(0xFF4CAF50)
-                    regularity >= 60 -> Color(0xFF8BC34A)
-                    regularity >= 40 -> Color(0xFFFFC107)
-                    regularity >= 20 -> Color(0xFFFF9800)
-                    else -> Color(0xFFF44336)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFE91E63),
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
+            )
+        },
+        containerColor = Color(0xFFFFF0F5)
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (cycles.isEmpty()) {
+                EmptyStateCard()
+            } else {
+                // Main stats cards
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        title = "Средний цикл",
+                        value = stats.avgCycleLength?.toString() ?: "—",
+                        unit = "дней",
+                        gradient = Brush.linearGradient(
+                            colors = listOf(Color(0xFFE91E63), Color(0xFFF06292))
+                        ),
+                        progress = (stats.avgCycleLength?.toFloat() ?: 0f) / 35f
+                    )
+                    
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        title = "Всего циклов",
+                        value = stats.totalCycles.toString(),
+                        unit = "отслежено",
+                        gradient = Brush.linearGradient(
+                            colors = listOf(Color(0xFF9C27B0), Color(0xFFBA68C8))
+                        ),
+                        progress = (stats.totalCycles.toFloat() / 12f).coerceAtMost(1f)
+                    )
                 }
-            )
-            
-            Text(
-                text = "Показатель: $regularity%",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                
+                // Period length card
+                AnimatedStatCard(
+                    title = "Средняя длина периода",
+                    value = stats.avgPeriodLength ?: 0,
+                    maxValue = 7,
+                    unit = "дней",
+                    color = Color(0xFFE91E63)
+                )
+                
+                // Tracking duration
+                BigStatCard(
+                    title = "📅 Отслеживание с",
+                    value = stats.trackingDays.toString(),
+                    subtitle = "дней данных",
+                    gradient = Brush.linearGradient(
+                        colors = listOf(Color(0xFFFF9800), Color(0xFFFFB74D))
+                    )
+                )
+                
+                // Cycle range
+                if (stats.shortestCycle != null && stats.longestCycle != null) {
+                    CycleRangeCard(
+                        shortest = stats.shortestCycle,
+                        longest = stats.longestCycle,
+                        average = stats.avgCycleLength ?: 28
+                    )
+                }
+                
+                // Regularity indicator
+                RegularityCard(
+                    regularity = stats.regularity
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun RecentTrendsCard(
-    cycles: List<CycleEntity>,
-    symptoms: List<SymptomEntity>,
-    modifier: Modifier = Modifier
+fun StatCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String,
+    unit: String,
+    gradient: Brush,
+    progress: Float
 ) {
-    val last3Cycles = cycles.sortedByDescending { it.startDate }.take(3)
-    val recentSymptoms = symptoms.filter { 
-        it.date.isAfter(LocalDate.now().minusDays(30))
+    var animatedProgress by remember { mutableStateOf(0f) }
+    
+    LaunchedEffect(progress) {
+        animatedProgress = progress
     }
     
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+    val animatedValue by animateFloatAsState(
+        targetValue = animatedProgress,
+        animationSpec = tween(1000, easing = EaseOutCubic),
+        label = "progress"
+    )
+    
+    Card(
+        modifier = modifier.height(140.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(gradient)
+                .padding(16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = Icons.Default.Timeline,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Последние тренды",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    text = title,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.9f)
                 )
+                
+                Column {
+                    Text(
+                        text = value,
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Text(
+                        text = unit,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White.copy(alpha = 0.85f)
+                    )
+                }
+                
+                // Progress bar
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .background(Color.White.copy(alpha = 0.3f))
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(animatedValue)
+                            .fillMaxHeight()
+                            .background(Color.White)
+                    )
+                }
             }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            if (last3Cycles.isNotEmpty()) {
+        }
+    }
+}
+
+@Composable
+fun AnimatedStatCard(
+    title: String,
+    value: Int,
+    maxValue: Int,
+    unit: String,
+    color: Color
+) {
+    var animatedValue by remember { mutableStateOf(0) }
+    
+    LaunchedEffect(value) {
+        var current = 0
+        while (current < value) {
+            current++
+            animatedValue = current
+            kotlinx.coroutines.delay(50)
+        }
+    }
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
                 Text(
-                    text = "Последние 3 цикла:",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    text = title,
+                    fontSize = 16.sp,
+                    color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                
-                last3Cycles.forEach { cycle ->
-                    val length = cycle.endDate?.let { endDate ->
-                        ChronoUnit.DAYS.between(cycle.startDate, endDate).toInt()
-                    } ?: "В процессе"
-                    
+                Row(
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     Text(
-                        text = "${cycle.startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} - $length дн.",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = animatedValue.toString(),
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = color
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = unit,
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
                 }
             }
             
-            if (recentSymptoms.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(16.dp))
+            // Circular progress
+            CircularProgressIndicator(
+                value = animatedValue.toFloat() / maxValue,
+                progress = value.toFloat() / maxValue,
+                color = color
+            )
+        }
+    }
+}
+
+@Composable
+fun CircularProgressIndicator(
+    value: Float,
+    progress: Float,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = tween(1000, easing = EaseOutCubic),
+        label = "circular"
+    )
+    
+    Box(
+        modifier = modifier.size(80.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.size(80.dp)) {
+            val strokeWidth = 8.dp.toPx()
+            
+            // Background circle
+            drawArc(
+                color = Color.Gray.copy(alpha = 0.2f),
+                startAngle = -90f,
+                sweepAngle = 360f,
+                useCenter = false,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+                size = Size(size.width, size.height)
+            )
+            
+            // Progress arc
+            drawArc(
+                color = color,
+                startAngle = -90f,
+                sweepAngle = 360f * animatedProgress,
+                useCenter = false,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+                size = Size(size.width, size.height)
+            )
+        }
+        
+        Text(
+            text = "${(animatedProgress * 100).roundToInt()}%",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+    }
+}
+
+@Composable
+fun BigStatCard(
+    title: String,
+    value: String,
+    subtitle: String,
+    gradient: Brush
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(gradient)
+                .padding(24.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
-                    text = "Симптомы за 30 дней: ${recentSymptoms.size}",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.95f)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = value,
+                    fontSize = 48.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    text = subtitle,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.9f)
                 )
             }
         }
@@ -350,49 +372,202 @@ private fun RecentTrendsCard(
 }
 
 @Composable
-private fun StatItem(
-    label: String,
-    value: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    modifier: Modifier = Modifier
+fun CycleRangeCard(
+    shortest: Int,
+    longest: Int,
+    average: Int
 ) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "Диапазон длины цикла",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFE91E63)
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                RangeItem("Короткий", shortest, Color(0xFF4CAF50))
+                RangeItem("Средний", average, Color(0xFFE91E63))
+                RangeItem("Длинный", longest, Color(0xFFFF9800))
+            }
+        }
+    }
+}
+
+@Composable
+fun RangeItem(label: String, value: Int, color: Color) {
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = value,
-            style = MaterialTheme.typography.headlineSmall,
+            text = value.toString(),
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = color
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            fontSize = 12.sp,
+            color = Color.Gray
         )
     }
 }
 
-private fun calculateRegularity(cycles: List<CycleEntity>): Int {
-    if (cycles.size < 2) return 0
-    
-    val lengths = cycles.map { cycle ->
-        ChronoUnit.DAYS.between(cycle.startDate, cycle.endDate!!).toInt()
+@Composable
+fun RegularityCard(regularity: String) {
+    val regularityRu = when (regularity) {
+        "Excellent" -> "Отличная"
+        "Good" -> "Хорошая"
+        "Fair" -> "Средняя"
+        "Variable" -> "Переменная"
+        else -> "Недостаточно данных"
     }
     
-    val avgLength = lengths.average()
-    val variance = lengths.map { (it - avgLength) * (it - avgLength) }.average()
-    val standardDeviation = kotlin.math.sqrt(variance)
+    val (color, emoji) = when (regularity) {
+        "Excellent" -> Color(0xFF4CAF50) to "🌟"
+        "Good" -> Color(0xFF8BC34A) to "✅"
+        "Fair" -> Color(0xFFFF9800) to "⚠️"
+        else -> Color(0xFFE91E63) to "📊"
+    }
     
-    // Простая формула регулярности: чем меньше отклонение, тем выше регулярность
-    val regularity = ((1 - standardDeviation / avgLength) * 100).coerceIn(0.0, 100.0)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color.copy(alpha = 0.1f))
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                Text(
+                    text = "Регулярность цикла",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = regularityRu,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = color
+                )
+            }
+            
+            Text(
+                text = emoji,
+                fontSize = 48.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun EmptyStateCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(48.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "📊",
+                fontSize = 64.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Пока нет данных",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Начните отслеживать циклы, чтобы увидеть статистику",
+                fontSize = 14.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+data class CycleStatistics(
+    val totalCycles: Int,
+    val avgCycleLength: Int?,
+    val avgPeriodLength: Int?,
+    val shortestCycle: Int?,
+    val longestCycle: Int?,
+    val trackingDays: Long,
+    val regularity: String
+)
+
+fun calculateStatistics(cycles: List<com.example.cycletracker.data.Cycle>): CycleStatistics {
+    if (cycles.isEmpty()) {
+        return CycleStatistics(0, null, null, null, null, 0, "Not enough data")
+    }
     
-    return regularity.roundToInt()
+    val completedCycles = cycles.filter { it.cycleLength != null }
+    
+    val avgCycleLength = if (completedCycles.isNotEmpty()) {
+        completedCycles.mapNotNull { it.cycleLength }.average().roundToInt()
+    } else null
+    
+    val shortestCycle = completedCycles.mapNotNull { it.cycleLength }.minOrNull()
+    val longestCycle = completedCycles.mapNotNull { it.cycleLength }.maxOrNull()
+    
+    val trackingDays = if (cycles.isNotEmpty()) {
+        ChronoUnit.DAYS.between(cycles.last().startDate, cycles.first().startDate)
+    } else 0L
+    
+    val regularity = if (completedCycles.size >= 3) {
+        val variance = completedCycles.mapNotNull { it.cycleLength }
+            .map { (it - (avgCycleLength ?: 28)).toDouble() }
+            .map { it * it }
+            .average()
+        
+        when {
+            variance < 4 -> "Excellent"
+            variance < 9 -> "Good"
+            variance < 16 -> "Fair"
+            else -> "Variable"
+        }
+    } else "Not enough data"
+    
+    return CycleStatistics(
+        totalCycles = cycles.size,
+        avgCycleLength = avgCycleLength,
+        avgPeriodLength = 5, // Default for now
+        shortestCycle = shortestCycle,
+        longestCycle = longestCycle,
+        trackingDays = trackingDays,
+        regularity = regularity
+    )
+}
+
+fun Brush.copy(alpha: Float): Brush {
+    return this
 }

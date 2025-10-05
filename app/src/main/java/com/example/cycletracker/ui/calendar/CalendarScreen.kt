@@ -1,183 +1,328 @@
 package com.example.cycletracker.ui.calendar
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.cycletracker.data.CycleEntity
+import androidx.compose.ui.unit.sp
+import com.example.cycletracker.ui.CycleViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.Locale
+import java.util.*
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarScreen(
-	cycles: List<CycleEntity>,
-	averageCycleDays: Int,
-	onDateClick: (LocalDate) -> Unit,
-	onAddSymptom: (LocalDate) -> Unit = {},
-	modifier: Modifier = Modifier
+fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
+    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Календарь") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, "Назад")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFE91E63),
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
+            )
+        },
+        containerColor = Color(0xFFFFF0F5)
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+        ) {
+            // Month navigation
+            MonthNavigationBar(
+                currentMonth = currentMonth,
+                onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
+                onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Calendar grid
+            CalendarGrid(
+                currentMonth = currentMonth,
+                viewModel = viewModel
+            )
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Legend
+            CalendarLegend()
+        }
+    }
+}
+
+@Composable
+fun MonthNavigationBar(
+    currentMonth: YearMonth,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit
 ) {
-	var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-	val days = remember(currentMonth) { generateMonthDays(currentMonth) }
-
-	val lastCycleStart = cycles.maxByOrNull { it.startDate }?.startDate
-	val predictedPeriod = remember(lastCycleStart, averageCycleDays) {
-		if (lastCycleStart != null) {
-			val nextStart = lastCycleStart.plusDays(averageCycleDays.toLong())
-			(nextStart..nextStart.plusDays(5))
-		} else emptyList()
-	}
-
-	Column(modifier = modifier.padding(16.dp)) {
-		Header(currentMonth = currentMonth, onPrev = { currentMonth = currentMonth.minusMonths(1) }, onNext = { currentMonth = currentMonth.plusMonths(1) })
-		Spacer(Modifier.height(8.dp))
-		WeekDaysRow()
-		Spacer(Modifier.height(4.dp))
-		AnimatedContent(
-			targetState = days,
-			transitionSpec = { fadeIn(animationSpec = tween(200)) togetherWith fadeOut(animationSpec = tween(200)) },
-			label = "monthSwitch"
-		) { daysState ->
-			for (week in daysState.chunked(7)) {
-				Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-					for (day in week) {
-						val isInCycle = day?.let { date ->
-							cycles.any { cycle ->
-								cycle.endDate?.let { endDate ->
-									!date.isBefore(cycle.startDate) && !date.isAfter(endDate)
-								} ?: (!date.isBefore(cycle.startDate) && date.isBefore(cycle.startDate.plusDays(7)))
-							}
-						} ?: false
-						
-						val isCycleStart = day?.let { date ->
-							cycles.any { it.startDate == date }
-						} ?: false
-						
-						val isCycleEnd = day?.let { date ->
-							cycles.any { it.endDate == date }
-						} ?: false
-						
-						DayCell(
-							date = day,
-							isCurrentMonth = day?.month == currentMonth.month,
-							isPredicted = day in predictedPeriod,
-							isInCycle = isInCycle,
-							isCycleStart = isCycleStart,
-							isCycleEnd = isCycleEnd,
-							onClick = { day?.let(onDateClick) },
-							onLongClick = { day?.let(onAddSymptom) },
-							modifier = Modifier.weight(1f).padding(4.dp)
-						)
-					}
-				}
-			}
-		}
-	}
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onPreviousMonth) {
+                Icon(
+                    Icons.Default.ArrowBack,
+                    contentDescription = "Previous",
+                    tint = Color(0xFFE91E63)
+                )
+            }
+            
+            Text(
+                text = currentMonth.format(DateTimeFormatter.ofPattern("LLLL yyyy", Locale("ru"))),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFE91E63)
+            )
+            
+            IconButton(onClick = onNextMonth) {
+                Icon(
+                    Icons.Default.ArrowForward,
+                    contentDescription = "Next",
+                    tint = Color(0xFFE91E63)
+                )
+            }
+        }
+    }
 }
 
-@Composable private fun Header(currentMonth: YearMonth, onPrev: () -> Unit, onNext: () -> Unit) {
-	Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-		Text("<", modifier = Modifier.clickable { onPrev() }, style = MaterialTheme.typography.headlineSmall)
-		Text(
-			"${currentMonth.month.getDisplayName(TextStyle.FULL_STANDALONE, java.util.Locale.getDefault())} ${currentMonth.year}",
-			style = MaterialTheme.typography.headlineSmall,
-			fontWeight = FontWeight.Bold
-		)
-		Text(">", modifier = Modifier.clickable { onNext() }, style = MaterialTheme.typography.headlineSmall)
-	}
-}
-
-@Composable private fun WeekDaysRow() {
-	val labels = listOf("Пн","Вт","Ср","Чт","Пт","Сб","Вс")
-	Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-		labels.forEach { label ->
-			Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-				Text(label, style = MaterialTheme.typography.bodySmall)
-			}
-		}
-	}
-}
-
-@Composable private fun DayCell(
-	date: LocalDate?,
-	isCurrentMonth: Boolean,
-	isPredicted: Boolean,
-	isInCycle: Boolean = false,
-	isCycleStart: Boolean = false,
-	isCycleEnd: Boolean = false,
-	onClick: () -> Unit,
-	onLongClick: () -> Unit = {},
-	modifier: Modifier = Modifier
+@Composable
+fun CalendarGrid(
+    currentMonth: YearMonth,
+    viewModel: CycleViewModel
 ) {
-	val bgColor by animateColorAsState(
-		targetValue = when {
-			!isCurrentMonth || date == null -> MaterialTheme.colorScheme.surface
-			isCycleStart -> MaterialTheme.colorScheme.error
-			isCycleEnd -> MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
-			isInCycle -> MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
-			isPredicted -> MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-			else -> MaterialTheme.colorScheme.surface
-		},
-		label = "dayBg"
-	)
-	
-	val textColor = when {
-		!isCurrentMonth -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-		isCycleStart || isCycleEnd -> MaterialTheme.colorScheme.onError
-		isInCycle -> MaterialTheme.colorScheme.onError.copy(alpha = 0.8f)
-		else -> MaterialTheme.colorScheme.onSurface
-	}
-	
-	Box(
-		modifier = modifier
-			.aspectRatio(1f)
-			.clip(CircleShape)
-			.background(bgColor)
-			.clickable(enabled = date != null && isCurrentMonth) { onClick() }
-			.clickable(enabled = date != null && isCurrentMonth) { onLongClick() },
-		contentAlignment = Alignment.Center
-	) {
-		Text(
-			text = date?.dayOfMonth?.toString() ?: "",
-			color = textColor,
-			fontWeight = if (isCycleStart || isCycleEnd) FontWeight.Bold else FontWeight.Normal
-		)
-	}
+    val cycles by viewModel.cycles.collectAsState()
+    val periodDates = remember(cycles) {
+        cycles.flatMap { cycle ->
+            val dates = mutableListOf<LocalDate>()
+            var date = cycle.startDate
+            val endDate = cycle.endDate ?: cycle.startDate.plusDays(5)
+            while (!date.isAfter(endDate)) {
+                dates.add(date)
+                date = date.plusDays(1)
+            }
+            dates
+        }.toSet()
+    }
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Week day headers
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEach { day ->
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = day,
+                            textAlign = TextAlign.Center,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Gray
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Calendar days
+            val firstDayOfMonth = currentMonth.atDay(1)
+            val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value - 1
+            val daysInMonth = currentMonth.lengthOfMonth()
+            
+            var dayCounter = 1 - firstDayOfWeek
+            
+            repeat(6) { week ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    repeat(7) { dayOfWeek ->
+                        if (dayCounter in 1..daysInMonth) {
+                            val date = currentMonth.atDay(dayCounter)
+                            DayCell(
+                                date = date,
+                                isPeriod = periodDates.contains(date),
+                                isToday = date == LocalDate.now(),
+                                onClick = { viewModel.togglePeriodDay(date) }
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                        dayCounter++
+                    }
+                }
+                if (week < 5) Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
 }
 
-private fun generateMonthDays(month: YearMonth): List<LocalDate?> {
-	val firstDay = month.atDay(1)
-	val firstWeekday = (firstDay.dayOfWeek.value + 6) % 7 // make Monday=0
-	val daysInMonth = month.lengthOfMonth()
-	val result = mutableListOf<LocalDate?>()
-	repeat(firstWeekday) { result.add(null) }
-	for (d in 1..daysInMonth) result.add(month.atDay(d))
-	while (result.size % 7 != 0) result.add(null)
-	return result
+@Composable
+fun RowScope.DayCell(
+    date: LocalDate,
+    isPeriod: Boolean,
+    isToday: Boolean,
+    onClick: () -> Unit
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.9f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "scale"
+    )
+    
+    val backgroundColor = when {
+        isPeriod -> Brush.radialGradient(
+            colors = listOf(Color(0xFFFF6B9D), Color(0xFFE91E63))
+        )
+        else -> Brush.radialGradient(
+            colors = listOf(Color(0xFFFFF0F5), Color(0xFFFFE4E1))
+        )
+    }
+    
+    Box(
+        modifier = Modifier
+            .weight(1f)
+            .aspectRatio(1f)
+            .padding(4.dp)
+            .scale(scale)
+            .clip(CircleShape)
+            .background(backgroundColor)
+            .clickable {
+                isPressed = true
+                onClick()
+                isPressed = false
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = date.dayOfMonth.toString(),
+            fontSize = 16.sp,
+            fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
+            color = if (isPeriod) Color.White else Color.Black
+        )
+        
+        if (isToday) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(2.dp)
+                    .clip(CircleShape)
+                    .background(Color.Transparent)
+                    .then(
+                        Modifier.background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(Color.Transparent, Color(0xFF4CAF50).copy(alpha = 0.3f))
+                            )
+                        )
+                    )
+            )
+        }
+    }
 }
 
-private operator fun LocalDate.rangeTo(other: LocalDate): List<LocalDate> {
-	val days = mutableListOf<LocalDate>()
-	var d = this
-	while (!d.isAfter(other)) {
-		days.add(d)
-		d = d.plusDays(1)
-	}
-	return days
+@Composable
+fun CalendarLegend() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Легенда",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFE91E63)
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            LegendItem(
+                color = Color(0xFFE91E63),
+                label = "День менструации"
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            LegendItem(
+                color = Color(0xFF4CAF50),
+                label = "Сегодня (зелёное свечение)"
+            )
+        }
+    }
+}
+
+@Composable
+fun LegendItem(color: Color, label: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(color)
+        )
+        
+        Spacer(modifier = Modifier.width(12.dp))
+        
+        Text(
+            text = label,
+            fontSize = 14.sp,
+            color = Color.Black
+        )
+    }
 }

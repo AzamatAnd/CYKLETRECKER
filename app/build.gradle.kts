@@ -13,26 +13,11 @@ android {
 		applicationId = "com.example.cycletracker"
 		minSdk = 24
 		targetSdk = 34
-		versionCode = 1
-		versionName = "1.0.0"
+		versionCode = 7
+		versionName = "1.6.0"
 
 		vectorDrawables {
 			useSupportLibrary = true
-		}
-	}
-
-	buildTypes {
-		release {
-			isMinifyEnabled = true
-			proguardFiles(
-				getDefaultProguardFile("proguard-android-optimize.txt"),
-				"proguard-rules.pro"
-			)
-			// Optional signing via gradle.properties if provided
-			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
-		}
-		debug {
-			isMinifyEnabled = false
 		}
 	}
 
@@ -48,6 +33,21 @@ android {
 				keyAlias = keyAliasProp
 				keyPassword = keyPasswordProp
 			}
+		}
+	}
+
+	buildTypes {
+		release {
+			isMinifyEnabled = true
+			proguardFiles(
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
+			)
+			// Optional signing via gradle.properties if provided
+			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+		}
+		debug {
+			isMinifyEnabled = false
 		}
 	}
 
@@ -110,11 +110,6 @@ dependencies {
 	implementation("androidx.room:room-ktx:2.6.1")
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
-
-	// Glance App Widget
-	implementation("androidx.glance:glance-appwidget:1.1.0")
-
-	// JSON/CSV handled manually
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.2.1")
