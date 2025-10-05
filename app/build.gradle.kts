@@ -111,11 +111,6 @@ dependencies {
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
 
-	// Glance App Widget
-	implementation("androidx.glance:glance-appwidget:1.1.0")
-
-	// JSON/CSV handled manually
-
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.2.1")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
