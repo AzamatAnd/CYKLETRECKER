@@ -29,6 +29,7 @@ import com.example.cycletracker.ui.components.SwipeHandler
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
@@ -417,3 +418,4 @@ fun HomeScreen(
             }
         }
     }
+}
