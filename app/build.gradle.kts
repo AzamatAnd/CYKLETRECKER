@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-	namespace = "com.example.cycletracker"
-	compileSdk = 34
+		namespace = "com.example.cycletracker"
+		compileSdk = 35
 
 	defaultConfig {
 		applicationId = "com.example.cycletracker"
-		minSdk = 24
-		targetSdk = 34
+		minSdk = 26
+		targetSdk = 35
 		versionCode = 7
-		versionName = "1.6.0"
+		versionName = "2.0.0"
 
 		vectorDrawables {
 			useSupportLibrary = true
@@ -109,16 +109,48 @@ dependencies {
 	implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
 	implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
-		implementation("androidx.datastore:datastore-preferences:1.1.1")
+	implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-		// WorkManager for reminders
-		implementation("androidx.work:work-runtime-ktx:2.9.1")
+	// WorkManager for reminders
+	implementation("androidx.work:work-runtime-ktx:2.9.1")
 
 	implementation("androidx.room:room-runtime:2.6.1")
 	ksp("androidx.room:room-compiler:2.6.1")
 	implementation("androidx.room:room-ktx:2.6.1")
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
+
+	// 🚀 Advanced AI/ML for 2025
+	implementation("com.google.ai.client.generativeai:generativeai:0.2.2")
+	implementation("com.google.mlkit:smart-reply:17.0.4")
+	implementation("com.google.mlkit:pose-detection-accurate:18.0.0-beta4")
+	implementation("com.google.mlkit:image-labeling:17.0.8")
+
+	// Web3 & Blockchain (simplified for 2024 compatibility)
+	implementation("org.web3j:core:4.9.8")
+
+	// Quantum-Safe Encryption (removed to avoid conflicts)
+	// implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
+
+	// AR/VR & Spatial Computing
+	implementation("com.google.ar:core:1.42.0")
+
+	// Edge AI & On-Device ML
+	implementation("org.tensorflow:tensorflow-lite:2.16.1")
+
+	// Advanced Health Integration
+	implementation("androidx.health.connect:connect-client:1.1.0-alpha11")
+
+	// Firebase for cloud features (simplified)
+	implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+	implementation("com.google.firebase:firebase-analytics")
+	implementation("com.google.firebase:firebase-crashlytics")
+
+	// Health Connect for health data integration
+	implementation("androidx.health.connect:connect-client:1.1.0-alpha11")
+
+	// Speech-to-text for voice input
+	implementation("androidx.activity:activity-compose:1.9.2")
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.2.1")

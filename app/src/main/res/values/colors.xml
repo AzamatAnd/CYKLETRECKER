@@ -1,7 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#6750A4</color>
-	<color name="colorOnPrimary">#FFFFFF</color>
-	<color name="colorSurface">#FFFBFE</color>
-	<color name="colorOnSurface">#1C1B1F</color>
+    <!-- Ultra Modern Color Palette -->
+    <color name="primary">#FF9C27B0</color>
+    <color name="onPrimary">#FFFFFFFF</color>
+    <color name="primaryContainer">#FFE1BEE7</color>
+    <color name="onPrimaryContainer">#FF4A148C</color>
+    
+    <color name="secondary">#FF7B1FA2</color>
+    <color name="onSecondary">#FFFFFFFF</color>
+    <color name="secondaryContainer">#FFE1BEE7</color>
+    <color name="onSecondaryContainer">#FF4A148C</color>
+    
+    <color name="tertiary">#FFAB47BC</color>
+    <color name="onTertiary">#FFFFFFFF</color>
+    <color name="tertiaryContainer">#FFF3E5F5</color>
+    <color name="onTertiaryContainer">#FF6A1B9A</color>
+    
+    <color name="error">#FFB00020</color>
+    <color name="onError">#FFFFFFFF</color>
+    <color name="errorContainer">#FFFCD8DF</color>
+    <color name="onErrorContainer">#FF690005</color>
+    
+    <color name="background">#FFF8F6FA</color>
+    <color name="onBackground">#FF1D1B20</color>
+    
+    <color name="surface">#FFFFFFFF</color>
+    <color name="onSurface">#FF1D1B20</color>
+    <color name="surfaceVariant">#FFF3E5F5</color>
+    <color name="onSurfaceVariant">#FF49454F</color>
+    
+    <color name="outline">#FF79747E</color>
+    <color name="outlineVariant">#FFC4C7C5</color>
+    
+    <color name="scrim">#FF000000</color>
+    <color name="inverseSurface">#FF303033</color>
+    <color name="inverseOnSurface">#FFF5F5F5</color>
+    <color name="inversePrimary">#FFD1C4E9</color>
+    
+    <color name="shadow">#FF000000</color>
+    <color name="surfaceTint">#FF9C27B0</color>
+    
+    <!-- Modern Gradient colors -->
+    <color name="gradient_start">#FF9C27B0</color>
+    <color name="gradient_middle">#FFBA68C8</color>
+    <color name="gradient_end">#FFE1BEE7</color>
+    
+    <!-- Vibrant accent colors -->
+    <color name="accent_pink">#FFEC407A</color>
+    <color name="accent_purple">#FF8E24AA</color>
+    <color name="accent_lavender">#FF9575CD</color>
+    
+    <!-- Status colors -->
+    <color name="success">#FF4CAF50</color>
+    <color name="warning">#FFFFC107</color>
+    <color name="info">#FF2196F3</color>
+    
+    <!-- Glass morphism effects -->
+    <color name="glass_light">#66FFFFFF</color>
+    <color name="glass_dark">#66121212</color>
+    
+    <!-- Legacy colors for compatibility -->
+    <color name="colorPrimary">#FF9C27B0</color>
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+    <color name="colorSurface">#FFFFFFFF</color>
+    <color name="colorOnSurface">#FF1D1B20</color>
 </resources>
