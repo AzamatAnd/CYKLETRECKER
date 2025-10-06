@@ -373,7 +373,7 @@ fun AddNoteDialog(
     var noteText by remember { mutableStateOf("") }
     var selectedMood by remember { mutableStateOf<String?>(null) }
     
-    AlertDialog(
+    BasicAlertDialog(
         onDismissRequest = onDismiss
     ) {
         Card(

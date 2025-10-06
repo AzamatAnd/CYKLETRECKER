@@ -68,36 +68,19 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = "home" }
                         )
-                        "assistant" -> AssistantScreen(
+                        else -> HomeScreen(
                             viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "settings" -> SettingsScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "phases" -> PhasesScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "trends" -> TrendsScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "goals" -> GoalsScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "backup" -> BackupScreen(
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "mood" -> MoodScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
-                        )
-                        "meds" -> MedicationsScreen(
-                            viewModel = viewModel,
-                            onNavigateBack = { currentScreen = "home" }
+                            onNavigateToCalendar = { currentScreen = "calendar" },
+                            onNavigateToStatistics = { currentScreen = "statistics" },
+                            onNavigateToNotes = { currentScreen = "notes" },
+                            onNavigateToAssistant = { currentScreen = "home" },
+                            onNavigateToSettings = { currentScreen = "home" },
+                            onNavigateToMood = { currentScreen = "home" },
+                            onNavigateToMeds = { currentScreen = "home" },
+                            onNavigateToPhases = { currentScreen = "home" },
+                            onNavigateToTrends = { currentScreen = "home" },
+                            onNavigateToGoals = { currentScreen = "home" },
+                            onNavigateToBackup = { currentScreen = "home" }
                         )
                     }
                 }

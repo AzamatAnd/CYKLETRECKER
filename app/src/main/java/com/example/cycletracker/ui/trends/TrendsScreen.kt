@@ -10,7 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -83,7 +83,7 @@ fun TrendsScreen(
             // Настроение за 30 дней
             TrendCard(
                 title = "Настроение за 30 дней",
-                icon = Icons.Default.TrendingUp,
+                icon = Icons.AutoMirrored.Filled.TrendingUp,
                 color = Color(0xFFE91E63)
             ) {
                 MoodTrendChart(
@@ -93,11 +93,11 @@ fun TrendsScreen(
             }
             
             // Длина циклов
-            TrendCard(
-                title = "Длина циклов",
-                icon = Icons.Default.TrendingUp,
-                color = Color(0xFF9C27B0)
-            ) {
+             TrendCard(
+                 title = "Длина циклов",
+                 icon = Icons.AutoMirrored.Filled.TrendingUp,
+                 color = Color(0xFF9C27B0)
+             ) {
                 CycleLengthChart(
                     data = trendsData.cycleLengths,
                     modifier = Modifier.height(200.dp)
@@ -110,11 +110,11 @@ fun TrendsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TrendCard(
-                    title = "Энергия",
-                    icon = Icons.Default.TrendingUp,
-                    color = Color(0xFFFF9800),
-                    modifier = Modifier.weight(1f)
-                ) {
+                     title = "Энергия",
+                     icon = Icons.AutoMirrored.Filled.TrendingUp,
+                     color = Color(0xFFFF9800),
+                     modifier = Modifier.weight(1f)
+                 ) {
                     EnergyChart(
                         data = trendsData.energyTrend,
                         modifier = Modifier.height(150.dp)
@@ -123,7 +123,7 @@ fun TrendsScreen(
                 
                 TrendCard(
                     title = "Сон",
-                    icon = Icons.Default.TrendingUp,
+                    icon = Icons.AutoMirrored.Filled.TrendingUp,
                     color = Color(0xFF4CAF50),
                     modifier = Modifier.weight(1f)
                 ) {

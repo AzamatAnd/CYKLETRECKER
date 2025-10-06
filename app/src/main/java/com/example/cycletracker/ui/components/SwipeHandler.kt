@@ -22,30 +22,47 @@ fun SwipeHandler(
 ) {
     val density = LocalDensity.current
     val thresholdPx = with(density) { swipeThreshold.dp.toPx() }
-    
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .pointerInput(Unit) {
+                var totalDragX = 0f
+                var totalDragY = 0f
+                var hasTriggered = false
+
                 detectDragGestures(
-                    onDragEnd = { },
-                    onDrag = { change, _ ->
-                        val deltaX = change.position.x - change.previousPosition.x
-                        val deltaY = change.position.y - change.previousPosition.y
-                        
-                        when {
-                            abs(deltaX) > abs(deltaY) && abs(deltaX) > thresholdPx -> {
-                                if (deltaX > 0) {
-                                    onSwipeRight()
-                                } else {
-                                    onSwipeLeft()
+                    onDragStart = {
+                        totalDragX = 0f
+                        totalDragY = 0f
+                        hasTriggered = false
+                    },
+                    onDragEnd = {
+                        totalDragX = 0f
+                        totalDragY = 0f
+                        hasTriggered = false
+                    },
+                    onDrag = { change, dragAmount ->
+                        totalDragX += dragAmount.x
+                        totalDragY += dragAmount.y
+
+                        if (!hasTriggered) {
+                            when {
+                                abs(totalDragX) > abs(totalDragY) && abs(totalDragX) > thresholdPx -> {
+                                    hasTriggered = true
+                                    if (totalDragX > 0) {
+                                        onSwipeRight()
+                                    } else {
+                                        onSwipeLeft()
+                                    }
                                 }
-                            }
-                            abs(deltaY) > abs(deltaX) && abs(deltaY) > thresholdPx -> {
-                                if (deltaY > 0) {
-                                    onSwipeDown()
-                                } else {
-                                    onSwipeUp()
+                                abs(totalDragY) > abs(totalDragX) && abs(totalDragY) > thresholdPx -> {
+                                    hasTriggered = true
+                                    if (totalDragY > 0) {
+                                        onSwipeDown()
+                                    } else {
+                                        onSwipeUp()
+                                    }
                                 }
                             }
                         }

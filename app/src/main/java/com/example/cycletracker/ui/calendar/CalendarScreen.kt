@@ -3,6 +3,8 @@ package com.example.cycletracker.ui.calendar
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -79,37 +81,37 @@ fun CalendarScreen(viewModel: CycleViewModel, onNavigateBack: () -> Unit) {
         },
         containerColor = Color(0xFFFFF0F5)
           ) { padding ->
-              SwipeHandler(
-                  onSwipeLeft = { currentMonth = currentMonth.plusMonths(1) },
-                  onSwipeRight = { currentMonth = currentMonth.minusMonths(1) },
-                  onSwipeUp = onNavigateBack
+              Column(
+                  modifier = Modifier
+                      .fillMaxSize()
+                      .padding(padding)
+                      .padding(16.dp)
               ) {
-                  Column(
-                      modifier = Modifier
-                          .fillMaxSize()
-                          .padding(padding)
-                          .padding(16.dp)
+                  SwipeHandler(
+                      onSwipeLeft = { currentMonth = currentMonth.plusMonths(1) },
+                      onSwipeRight = { currentMonth = currentMonth.minusMonths(1) },
+                      onSwipeUp = onNavigateBack
                   ) {
-            // Month navigation
-            MonthNavigationBar(
-                currentMonth = currentMonth,
-                onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
-                onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
-            )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Calendar grid
-            CalendarGrid(
-                currentMonth = currentMonth,
-                viewModel = viewModel
-            )
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            // Legend
-            CalendarLegend()
+                      // Month navigation
+                      MonthNavigationBar(
+                          currentMonth = currentMonth,
+                          onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
+                          onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
+                      )
                   }
+
+                  Spacer(modifier = Modifier.height(16.dp))
+
+                  // Calendar grid (without SwipeHandler interference)
+                  CalendarGrid(
+                      currentMonth = currentMonth,
+                      viewModel = viewModel
+                  )
+
+                  Spacer(modifier = Modifier.height(24.dp))
+
+                  // Legend
+                  CalendarLegend()
               }
           }
       }
@@ -317,7 +319,15 @@ fun DayCell(
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
         label = "scale"
     )
-    
+
+    // Handle press animation timing
+    LaunchedEffect(isPressed) {
+        if (isPressed) {
+            delay(150) // Show pressed state for 150ms
+            isPressed = false
+        }
+    }
+
     val backgroundBrush = when {
         isPeriod -> Brush.radialGradient(
             colors = listOf(Color(0xFFFF6B9D), Color(0xFFE91E63))
@@ -332,7 +342,7 @@ fun DayCell(
             colors = listOf(Color(0xFFFFF0F5), Color(0xFFFFE4E1))
         )
     }
-    
+
     Box(
         modifier = modifier
             .scale(scale)
@@ -341,7 +351,6 @@ fun DayCell(
             .clickable {
                 isPressed = true
                 onClick()
-                isPressed = false
             },
         contentAlignment = Alignment.Center
     ) {

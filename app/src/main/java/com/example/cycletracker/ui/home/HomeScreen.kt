@@ -10,7 +10,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Spa
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material3.*
@@ -233,7 +233,7 @@ fun HomeScreen(
                     containerColor = Color(0xFF6A1B9A)
                 )
             ) {
-                Icon(Icons.Default.TrendingUp, contentDescription = null, tint = Color.White)
+                Icon(Icons.AutoMirrored.Filled.TrendingUp, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Анализ трендов", color = Color.White, fontSize = 16.sp)
             }
