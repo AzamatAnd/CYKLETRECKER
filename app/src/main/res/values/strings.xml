@@ -1,4 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">CycleTracker</string>
+
+	<!-- Navigation -->
+	<string name="nav_home">Главная</string>
+	<string name="nav_calendar">Календарь</string>
+	<string name="nav_analytics">Аналитика</string>
+	<string name="nav_settings">Настройки</string>
+	<string name="nav_vrar">VR/AR</string>
+	<string name="nav_blockchain">Блокчейн</string>
+
+	<!-- Main Screen -->
+	<string name="main_title">🚀 CYCLETRACKER</string>
+	<string name="main_subtitle">ULTRA MODERN HEALTH AI</string>
+	<string name="current_cycle_status">📊 Текущий статус цикла</string>
+	<string name="cycle_day_progress">День %1$d</string>
+	<string name="cycle_phase_follicular">Фолликулярная</string>
+	<string name="cycle_phase_ovulatory">Овуляторная</string>
+	<string name="cycle_phase_luteal">Лютеиновая</string>
+	<string name="cycle_phase_menstrual">Менструальная</string>
+	<string name="phase_prefix">📅</string>
+
+	<!-- Quick Actions -->
+	<string name="quick_actions_title">⚡ QUICK ACTIONS</string>
+	<string name="action_log_symptoms">📝 Лог симптомов</string>
+	<string name="action_log_mood">😊 Лог настроения</string>
+	<string name="action_log_medication">💊 Лог медикаментов</string>
+
+	<!-- Today's Insights -->
+	<string name="today_insights_title">💡 Сегодняшние insights</string>
+	<string name="mood_indicator">Настроение</string>
+	<string name="energy_indicator">Энергия</string>
+	<string name="stress_indicator">Стресс</string>
+
+	<!-- Recent Activities -->
+	<string name="recent_activities_title">📋 Недавние активности</string>
+	<string name="activity_vitamin_d">Прием витамина D</string>
+	<string name="activity_exercise">Физическая активность</string>
+	<string name="activity_meditation">Медитация</string>
+	<string name="activity_time">время</string>
+	<string name="completed_label">✓</string>
+
+	<!-- AI Features -->
+	<string name="ai_features_title">🤖 AI-ФИЧИ 2025</string>
+	<string name="ai_features_subtitle">Революционные технологии здоровья</string>
+	<string name="feature_symptom_prediction">🔮 Прогноз симптомов</string>
+	<string name="feature_symptom_desc">Предсказание на основе ИИ</string>
+	<string name="feature_genetic_analysis">🧬 Генетический анализ</string>
+	<string name="feature_genetic_desc">Персональные рекомендации</string>
+	<string name="feature_smart_reminders">⚡ Умные напоминания</string>
+	<string name="feature_smart_desc">Контекстные уведомления</string>
+
+	<!-- VR/AR Features -->
+	<string name="vrar_title">🥽 VR/AR 3D Визуализация</string>
+	<string name="vrar_desc">Иммерсивный опыт в 3D</string>
+
+	<!-- Blockchain Features -->
+	<string name="blockchain_title">⛓️ Блокчейн безопасность</string>
+	<string name="blockchain_desc">Децентрализованные данные</string>
+
+	<!-- Health Score -->
+	<string name="health_score_title">💎 ULTRA HEALTH SCORE 2025</string>
+	<string name="health_score_unit">баллов</string>
+	<string name="health_status_excellent">Отличное здоровье</string>
+	<string name="health_status_good">Хорошее здоровье</string>
+	<string name="health_status_fair">Удовлетворительное</string>
+	<string name="health_status_poor">Требует внимания</string>
+
+	<!-- Analytics -->
+	<string name="analytics_title">📈 Аналитика здоровья AI</string>
+	<string name="analytics_subtitle">Детальный анализ данных</string>
+	<string name="cycle_length_card">Длина цикла</string>
+	<string name="current_day_card">Текущий день</string>
+	<string name="symptoms_card">Симптомы</string>
+	<string name="period_card">Менструация</string>
+	<string name="days_label">дней</string>
+	<string name="health_metrics_title">📊 Метрики здоровья</string>
+	<string name="mood_chart">Настроение</string>
+	<string name="energy_chart">Энергия</string>
+	<string name="neural_network_title">🧠 Нейронная сеть анализа</string>
+	<string name="ultra_mode_button">🚀 Активировать ULTRA MODE</string>
+	<string name="quantum_analysis_button">⚛️ Запустить квантовый анализ</string>
+	<string name="quantum_analysis_started">⚛️ Квантовый анализ запущен</string>
+	<string name="ultra_mode_activated">🚀 ULTRA MODE ACTIVATED!</string>
+
+	<!-- Health Insights -->
+	<string name="health_insights_title">🔮 Персональные insights здоровья</string>
+	<string name="insight_sleep">Рекомендуется 7-8 часов сна для оптимального гормонального баланса</string>
+	<string name="insight_stress">Управление стрессом критически важно для регуляции менструального цикла</string>
+	<string name="insight_fertility">Окно фертильности: дни 12-16 цикла</string>
+
+	<!-- Monthly Summary -->
+	<string name="monthly_summary_title">📅 Месячная сводка</string>
+	<string name="summary_cycle_length">Длина цикла</string>
+	<string name="summary_effectiveness">Эффективность</string>
+	<string name="summary_health">Здоровье</string>
+	<string name="summary_mood">Настроение</string>
+	<string name="trend_positive">+2 дня по сравнению с прошлым месяцем</string>
+	<string name="trend_excellent">Отличная эффективность</string>
+	<string name="trend_stable">В норме</string>
+	<string name="trend_good">Хорошее настроение</string>
+
+	<!-- Settings -->
+	<string name="settings_title">⚙️ Персональные настройки</string>
+	<string name="settings_subtitle">Детальная настройка приложения</string>
+
+	<!-- Notification Settings -->
+	<string name="notifications_section">🔔 Уведомления</string>
+	<string name="cycle_reminders_title">Напоминания о цикле</string>
+	<string name="cycle_reminders_desc">Уведомления о важных датах цикла</string>
+	<string name="health_insights_title">Инсайты здоровья</string>
+	<string name="health_insights_desc">Советы по улучшению здоровья</string>
+	<string name="push_notifications_title">Push-уведомления</string>
+	<string name="push_notifications_desc">Мгновенные уведомления о событиях</string>
+
+	<!-- Privacy & Security -->
+	<string name="privacy_section">🔒 Приватность и безопасность</string>
+	<string name="biometric_auth_title">Биометрическая аутентификация</string>
+	<string name="biometric_auth_desc">Использовать Face ID или отпечаток пальца</string>
+	<string name="data_sync_title">Синхронизация данных</string>
+	<string name="data_sync_desc">Резервное копирование в облако</string>
+
+	<!-- Appearance -->
+	<string name="appearance_section">🎨 Внешний вид</string>
+	<string name="dark_theme_title">Темная тема</string>
+	<string name="dark_theme_desc">Темный интерфейс для комфорта глаз</string>
+
+	<!-- Data Management -->
+	<string name="data_section">💾 Управление данными</string>
+	<string name="export_data_title">Экспорт данных</string>
+	<string name="export_data_desc">Сохранить данные в файл</string>
+	<string name="import_data_title">Импорт данных</string>
+	<string name="import_data_desc">Восстановить из резервной копии</string>
+	<string name="delete_data_title">Удалить все данные</string>
+	<string name="delete_data_desc">Безвозвратное удаление всех данных</string>
+
+	<!-- Information -->
+	<string name="info_section">ℹ️ Информация</string>
+	<string name="app_version_title">О приложении</string>
+	<string name="app_version_desc">Версия 2.5.0 Ultra AI Edition</string>
+	<string name="privacy_policy_title">Политика конфиденциальности</string>
+	<string name="privacy_policy_desc">Как мы защищаем ваши данные</string>
+	<string name="terms_of_service_title">Условия использования</string>
+	<string name="terms_of_service_desc">Правила использования приложения</string>
+
+	<!-- Error Messages -->
+	<string name="error_invalid_cycle_data">⚠️ Проверьте правильность данных цикла</string>
+	<string name="error_permission_denied">❌ Требуется разрешение для работы функции</string>
+	<string name="error_network_unavailable">🌐 Проверьте подключение к интернету</string>
+	<string name="error_data_corrupted">🔧 Данные повреждены, требуется восстановление</string>
+
+	<!-- Success Messages -->
+	<string name="success_data_saved">✅ Данные успешно сохранены</string>
+	<string name="success_symptom_logged">📝 Симптом записан</string>
+	<string name="success_mood_logged">😊 Настроение обновлено</string>
+	<string name="success_medication_logged">💊 Медикамент записан</string>
+	<string name="success_backup_created">💾 Резервная копия создана</string>
+
+	<!-- Loading Messages -->
+	<string name="loading_ai_analysis">🤖 Анализирую данные с помощью ИИ...</string>
+	<string name="loading_health_insights">🔮 Генерирую персональные инсайты...</string>
+	<string name="loading_cycle_prediction">📅 Рассчитываю прогноз цикла...</string>
+	<string name="loading_sync_data">🔄 Синхронизирую данные...</string>
+
+	<!-- Button Labels -->
+	<string name="btn_save">💾 Сохранить</string>
+	<string name="btn_cancel">❌ Отмена</string>
+	<string name="btn_delete">🗑️ Удалить</string>
+	<string name="btn_edit">✏️ Редактировать</string>
+	<string name="btn_add">➕ Добавить</string>
+	<string name="btn_confirm">✓ Подтвердить</string>
+	<string name="btn_back">⬅️ Назад</string>
+	<string name="btn_next">➡️ Далее</string>
+	<string name="btn_finish">🏁 Завершить</string>
+	<string name="btn_retry">🔄 Повторить</string>
+
+	<!-- Dialog Titles -->
+	<string name="dialog_confirm_delete_title">Подтверждение удаления</string>
+	<string name="dialog_confirm_delete_message">Вы уверены, что хотите удалить эти данные?</string>
+	<string name="dialog_permission_required_title">Требуется разрешение</string>
+	<string name="dialog_permission_required_message">Для работы этой функции необходимо разрешение</string>
+	<string name="dialog_error_title">Ошибка</string>
+	<string name="dialog_success_title">Успешно</string>
+
+	<!-- Accessibility -->
+	<string name="accessibility_cycle_progress">Прогресс цикла</string>
+	<string name="accessibility_health_score">Оценка здоровья</string>
+	<string name="accessibility_navigation_menu">Меню навигации</string>
+	<string name="accessibility_quick_actions">Быстрые действия</string>
+	<string name="accessibility_ai_features">AI функции</string>
+	<string name="accessibility_settings">Настройки</string>
+
+	<!-- Content Descriptions -->
+	<string name="content_desc_cycle_icon">Иконка цикла</string>
+	<string name="content_desc_ai_brain">ИИ мозг</string>
+	<string name="content_desc_vr_glasses">VR очки</string>
+	<string name="content_desc_blockchain">Блокчейн</string>
+	<string name="content_desc_health_chart">График здоровья</string>
+	<string name="content_desc_loading_animation">Анимация загрузки</string>
+	<string name="content_desc_user_avatar">Аватар пользователя</string>
+
+	<!-- Hints and Tooltips -->
+	<string name="hint_long_press">Долгое нажатие для дополнительных опций</string>
+	<string name="hint_swipe_left">Свайп влево для удаления</string>
+	<string name="hint_swipe_right">Свайп вправо для действий</string>
+	<string name="hint_double_tap">Двойное нажатие для детального просмотра</string>
+
+	<!-- Empty States -->
+	<string name="empty_no_data_title">Нет данных для отображения</string>
+	<string name="empty_no_data_message">Начните отслеживать свой цикл для получения персональных инсайтов</string>
+	<string name="empty_no_symptoms_title">Симптомы не записаны</string>
+	<string name="empty_no_symptoms_message">Записывайте симптомы для более точного анализа</string>
+	<string name="empty_no_insights_title">Инсайты недоступны</string>
+	<string name="empty_no_insights_message">Недостаточно данных для генерации инсайтов</string>
+
 </resources>

@@ -77,4 +77,21 @@
     <color name="colorOnPrimary">#FFFFFFFF</color>
     <color name="colorSurface">#FF1A1A2E</color>
     <color name="colorOnSurface">#FFE6E1E5</color>
+
+    <!-- Android 14 compatible colors -->
+    <color name="surfaceContainer">#FF16213E</color>
+    <color name="surfaceContainerHigh">#FF1E1E3A</color>
+    <color name="surfaceContainerHighest">#FF2A2A40</color>
+    <color name="surfaceContainerLow">#FF121228</color>
+    <color name="surfaceContainerLowest">#FF0A0A14</color>
+
+    <!-- Safe fallback colors for Android 14 -->
+    <color name="primary_safe">#6366F1</color>
+    <color name="secondary_safe">#14B8A6</color>
+    <color name="background_safe">#0F0F23</color>
+    <color name="surface_safe">#1A1A2E</color>
+    <color name="onPrimary_safe">#FFFFFF</color>
+    <color name="onSecondary_safe">#FFFFFF</color>
+    <color name="onBackground_safe">#E6E1E5</color>
+    <color name="onSurface_safe">#E6E1E5</color>
 </resources>
