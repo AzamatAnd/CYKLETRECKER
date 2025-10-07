@@ -27,26 +27,28 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔐 Setup gradlew permissions
+      - name: 🔐 Setup gradlew permissions with fallback
         run: |
           echo "🔍 Current directory: $(pwd)"
-          echo "📁 Listing root directory:"
-          ls -la | head -20
-          echo "🔍 Looking for gradlew:"
-          find . -name "gradlew" -type f 2>/dev/null || echo "gradlew not found with find"
-          echo "🔍 Checking if gradlew exists in current dir:"
+          echo "🔍 Looking for gradlew in current directory:"
+          ls -la gradlew 2>/dev/null || echo "gradlew not found in root"
+
+          echo "🔍 Searching for gradlew in entire project:"
+          find . -name "gradlew" -type f -exec ls -la {} \; 2>/dev/null || echo "No gradlew found"
+
+          echo "🔧 Setting execute permissions on gradlew:"
+          find . -name "gradlew" -type f -exec chmod +x {} \;
+
+          echo "✅ Verification after chmod:"
+          find . -name "gradlew" -type f -exec ls -la {} \;
+
+          echo "🧪 Testing gradlew execution:"
           if [ -f "gradlew" ]; then
-            echo "✅ gradlew found in root"
-            ls -la gradlew
-            chmod +x gradlew
-            ls -la gradlew
+            ./gradlew --version || echo "Gradle version check failed"
           else
-            echo "❌ gradlew not found in root, searching deeper:"
-            find . -name "gradlew" -type f -exec ls -la {} \;
-            find . -name "gradlew" -type f -exec chmod +x {} \;
+            echo "❌ gradlew still not found in root directory"
+            exit 1
           fi
-          echo "🧪 Final check:"
-          ls -la gradlew 2>/dev/null || echo "gradlew still not accessible"
 
       - name: ☕ Setup JDK 17
         uses: actions/setup-java@v4
@@ -106,26 +108,28 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔐 Setup gradlew permissions
+      - name: 🔐 Setup gradlew permissions with fallback
         run: |
           echo "🔍 Current directory: $(pwd)"
-          echo "📁 Listing root directory:"
-          ls -la | head -20
-          echo "🔍 Looking for gradlew:"
-          find . -name "gradlew" -type f 2>/dev/null || echo "gradlew not found with find"
-          echo "🔍 Checking if gradlew exists in current dir:"
+          echo "🔍 Looking for gradlew in current directory:"
+          ls -la gradlew 2>/dev/null || echo "gradlew not found in root"
+
+          echo "🔍 Searching for gradlew in entire project:"
+          find . -name "gradlew" -type f -exec ls -la {} \; 2>/dev/null || echo "No gradlew found"
+
+          echo "🔧 Setting execute permissions on gradlew:"
+          find . -name "gradlew" -type f -exec chmod +x {} \;
+
+          echo "✅ Verification after chmod:"
+          find . -name "gradlew" -type f -exec ls -la {} \;
+
+          echo "🧪 Testing gradlew execution:"
           if [ -f "gradlew" ]; then
-            echo "✅ gradlew found in root"
-            ls -la gradlew
-            chmod +x gradlew
-            ls -la gradlew
+            ./gradlew --version || echo "Gradle version check failed"
           else
-            echo "❌ gradlew not found in root, searching deeper:"
-            find . -name "gradlew" -type f -exec ls -la {} \;
-            find . -name "gradlew" -type f -exec chmod +x {} \;
+            echo "❌ gradlew still not found in root directory"
+            exit 1
           fi
-          echo "🧪 Final check:"
-          ls -la gradlew 2>/dev/null || echo "gradlew still not accessible"
 
       - name: ☕ Setup JDK 17
         uses: actions/setup-java@v4
