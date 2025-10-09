@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background circle -->
+    <path
+        android:pathData="M54,54m-50,0a50,50 0,1,1,100,0a50,50 0,1,1,-100,0"
+        android:fillColor="#0A0A0A"/>
+    
+    <!-- AI Brain -->
+    <path
+        android:pathData="M35,45 Q30,35 35,30 Q40,35 45,40 Q50,35 55,45 Q50,50 45,55 Q40,50 35,45"
+        android:fillColor="#00E5FF"
+        android:fillAlpha="0.8"/>
+    
+    <path
+        android:pathData="M63,45 Q58,35 63,30 Q68,35 73,40 Q78,35 73,45 Q68,50 63,55 Q58,50 63,45"
+        android:fillColor="#00E5FF"
+        android:fillAlpha="0.8"/>
+    
+    <!-- Connection -->
+    <path
+        android:pathData="M45,42 L63,42"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#03DAC6"
+        android:strokeWidth="2"/>
+    
+    <!-- Cycle indicators -->
+    <path
+        android:pathData="M54,15m-3,0a3,3 0,1,1,6,0a3,3 0,1,1,-6,0"
+        android:fillColor="#FF6B6B"/>
+    
+    <path
+        android:pathData="M85,54m-3,0a3,3 0,1,1,6,0a3,3 0,1,1,-6,0"
+        android:fillColor="#4CAF50"/>
+    
+    <path
+        android:pathData="M54,93m-3,0a3,3 0,1,1,6,0a3,3 0,1,1,-6,0"
+        android:fillColor="#FF9800"/>
+    
+    <path
+        android:pathData="M23,54m-3,0a3,3 0,1,1,6,0a3,3 0,1,1,-6,0"
+        android:fillColor="#9C27B0"/>
+    
+    <!-- Central core -->
+    <path
+        android:pathData="M54,54m-8,0a8,8 0,1,1,16,0a8,8 0,1,1,-16,0"
+        android:fillColor="#00E5FF"/>
+    
+    <!-- Pulsing rings -->
+    <path
+        android:pathData="M54,54m-12,0a12,12 0,1,1,24,0a12,12 0,1,1,-24,0"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.6"/>
+    
+    <path
+        android:pathData="M54,54m-16,0a16,16 0,1,1,32,0a16,16 0,1,1,-32,0"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.3"/>
+    
+</vector>

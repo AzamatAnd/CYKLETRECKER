@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Включаем резервное копирование данных приложения для Android 14 -->
-    <include domain="database" path="cycletracker.db"/>
-    <include domain="file" path="preferences/"/>
-    <include domain="file" path="files/"/>
-
-    <!-- Исключаем временные файлы и кэш -->
-    <exclude domain="file" path="cache/"/>
-    <exclude domain="file" path="tmp/"/>
-    <exclude domain="file" path="temp/"/>
+    <include domain="sharedpref" path="." />
+    <exclude domain="sharedpref" path="device.xml" />
 </full-backup-content>

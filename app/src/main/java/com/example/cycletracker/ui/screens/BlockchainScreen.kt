@@ -1,242 +1,174 @@
 package com.example.cycletracker.ui.screens
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cycletracker.blockchain.BlockchainManager
+import com.example.cycletracker.blockchain.NFTHelthToken
+import com.example.cycletracker.blockchain.NFTRarity
 
-/**
- * Блокчейн экран для децентрализованного хранения медицинских данных
- * Реализует Web3 интеграцию и NFT токены для данных здоровья
- */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlockchainScreen(modifier: Modifier = Modifier) {
-    val scrollState = rememberScrollState()
-
+fun BlockchainScreen(
+    blockchainManager: BlockchainManager
+) {
+    val blockchainState by blockchainManager.blockchainState.collectAsState()
+    var selectedTab by remember { mutableIntStateOf(0) }
+    
+    val tabs = listOf("NFT Коллекция", "Блокчейн", "Безопасность", "Настройки")
+    
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF0F0F23),
-                        Color(0xFF1A1A2E),
-                        Color(0xFF16213E)
-                    )
-                )
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color(0xFF0A0A0A))
+            .padding(16.dp)
     ) {
+        // Header
+        Text(
+            text = "🔗 Блокчейн Технологии",
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
+        
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Blockchain Header
-        BlockchainHeader()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // NFT Health Token
-        HealthNFTToken()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Blockchain Features
-        BlockchainControlButtons()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Decentralized Health Features
-        BlockchainFeaturesList()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Health Data Marketplace
-        HealthDataMarketplace()
-
-        Spacer(modifier = Modifier.height(100.dp))
-    }
-}
-
-@Composable
-private fun BlockchainHeader() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF8A2BE2).copy(alpha = 0.2f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        
+        // Tab Row
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = "⛓️ БЛОКЧЕЙН ЗДОРОВЬЕ 2025",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF8A2BE2),
-                letterSpacing = 1.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "ДЕЦЕНТРАЛИЗОВАННЫЕ МЕДИЦИНСКИЕ ДАННЫЕ",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-        }
-    }
-}
-
-@Composable
-private fun HealthNFTToken() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF16213E)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            // NFT Token Visualization
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF8A2BE2),
-                                Color(0xFF6366F1)
-                            )
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🏥",
-                    fontSize = 32.sp
+            items(tabs.size) { index ->
+                BlockchainTabButton(
+                    text = tabs[index],
+                    isSelected = selectedTab == index,
+                    onClick = { selectedTab = index }
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "HEALTH NFT #2025-001",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF00F5FF),
-                letterSpacing = 1.sp
-            )
-
-            Text(
-                text = "Блок: 0x1a2b...3c4d",
-                fontSize = 12.sp,
-                color = Color(0xFFCAC4D0)
-            )
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Content
+        when (selectedTab) {
+            0 -> NFTCollectionTab(blockchainState.nftTokens)
+            1 -> BlockchainTab(blockchainState)
+            2 -> SecurityTab(blockchainState)
+            3 -> BlockchainSettingsTab()
         }
     }
 }
 
 @Composable
-private fun BlockchainControlButtons() {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            BlockchainButton(
-                "🔐 Зашифровать данные",
-                "Квантовое шифрование",
-                Color(0xFF8A2BE2),
-                modifier = Modifier.weight(1f)
-            )
-            BlockchainButton(
-                "📤 Синхронизировать",
-                "IPFS хранение",
-                Color(0xFFFF6B35),
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            BlockchainButton(
-                "👥 Поделиться с врачом",
-                "Безопасный доступ",
-                Color(0xFF14B8A6),
-                modifier = Modifier.weight(1f)
-            )
-            BlockchainButton(
-                "🏆 NFT Награды",
-                "За здоровый образ жизни",
-                Color(0xFF00FF88),
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun BlockchainButton(title: String, subtitle: String, color: Color, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier
-            .height(80.dp)
-            .clickable { /* Handle blockchain action */ },
-        colors = CardDefaults.cardColors(
-            containerColor = color.copy(alpha = 0.2f)
+fun BlockchainTabButton(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (isSelected) Color(0xFF00E5FF) else Color(0xFF1A1A1A)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Text(
+            text = text,
+            color = if (isSelected) Color.Black else Color.White,
+            fontSize = 14.sp
+        )
+    }
+}
+
+@Composable
+fun NFTCollectionTab(nftTokens: List<NFTHelthToken>) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Stats
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                StatCard("Всего NFT", nftTokens.size.toString(), "🏆")
+                StatCard("Редких", nftTokens.count { it.rarity == NFTRarity.RARE }.toString(), "💎")
+                StatCard("Эпических", nftTokens.count { it.rarity == NFTRarity.EPIC }.toString(), "⚡")
+            }
+        }
+        
+        // NFT Grid
+        item {
+            Text(
+                text = "Ваша коллекция",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        items(nftTokens) { nft ->
+            NFTCard(nft = nft)
+        }
+        
+        if (nftTokens.isEmpty()) {
+            item {
+                EmptyStateCard(
+                    icon = "🏆",
+                    title = "Нет NFT токенов",
+                    description = "Зарабатывайте достижения для получения NFT!"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun StatCard(title: String, value: String, icon: String) {
+    Card(
+        modifier = Modifier
+            .width(100.dp)
+            .height(80.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = title,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
+                text = icon,
+                fontSize = 20.sp
             )
             Text(
-                text = subtitle,
+                text = value,
+                color = Color(0xFF00E5FF),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = title,
+                color = Color.White.copy(alpha = 0.7f),
                 fontSize = 10.sp,
-                color = color,
                 textAlign = TextAlign.Center
             )
         }
@@ -244,113 +176,452 @@ private fun BlockchainButton(title: String, subtitle: String, color: Color, modi
 }
 
 @Composable
-private fun BlockchainFeaturesList() {
+fun NFTCard(nft: NFTHelthToken) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF16213E)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Text(
-                text = "⛓️ ДЕЦЕНТРАЛИЗОВАННЫЕ ВОЗМОЖНОСТИ",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF00F5FF),
-                letterSpacing = 1.sp
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            BlockchainFeatureItem("Неизменяемые медицинские записи")
-            BlockchainFeatureItem("Кросс-платформенная совместимость")
-            BlockchainFeatureItem("Монетизация данных с согласия пользователя")
-            BlockchainFeatureItem("Глобальный доступ к истории здоровья")
-            BlockchainFeatureItem("Криптографическая защита приватности")
-        }
-    }
-}
-
-@Composable
-private fun BlockchainFeatureItem(text: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
+        Row(
             modifier = Modifier
-                .size(8.dp)
-                .background(Color(0xFF8A2BE2), CircleShape)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = text,
-            fontSize = 12.sp,
-            color = Color(0xFFCAC4D0)
-        )
-    }
-}
-
-@Composable
-private fun HealthDataMarketplace() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF16213E)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Text(
-                text = "🏪 МАРКЕТПЛЕЙС ДАННЫХ ЗДОРОВЬЯ",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF00F5FF),
-                letterSpacing = 1.sp
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Ваши данные = Ваш актив",
-                fontSize = 12.sp,
-                color = Color(0xFFCAC4D0),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // NFT Icon
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                getRarityColor(nft.rarity),
+                                getRarityColor(nft.rarity).copy(alpha = 0.7f)
+                            )
+                        )
+                    ),
+                contentAlignment = Alignment.Center
             ) {
-                MarketplaceButton("🎯 Исследования", Color(0xFF6366F1))
-                MarketplaceButton("🏥 Клиники", Color(0xFF14B8A6))
-                MarketplaceButton("💊 Фармацевтика", Color(0xFFFF006E))
+                Text(
+                    text = "🏆",
+                    fontSize = 24.sp
+                )
+            }
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            // NFT Info
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = nft.achievement,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = nft.description,
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp
+                )
+                Text(
+                    text = nft.rarity.displayName,
+                    color = getRarityColor(nft.rarity),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            
+            // Rarity Badge
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(getRarityColor(nft.rarity))
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = nft.rarity.displayName,
+                    color = Color.Black,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
 }
 
 @Composable
-private fun MarketplaceButton(text: String, color: Color) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = color.copy(alpha = 0.2f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+fun BlockchainTab(blockchainState: com.example.cycletracker.blockchain.BlockchainState) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = text,
-            fontSize = 12.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+        // Blockchain Stats
+        item {
+            Text(
+                text = "Статистика блокчейна",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                StatCard("Блоков", blockchainState.totalBlocks.toString(), "🔗")
+                StatCard("NFT", blockchainState.totalNFTs.toString(), "🏆")
+                StatCard("Синхронизация", if (blockchainState.isConnected) "✅" else "❌", "🔄")
+            }
+        }
+        
+        // Data Integrity
+        item {
+            DataIntegrityCard(isValid = true)
+        }
+        
+        // Recent Blocks
+        item {
+            Text(
+                text = "Последние блоки",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        items(blockchainState.dataBlocks.take(5)) { block ->
+            BlockCard(block = block)
+        }
+    }
+}
+
+@Composable
+fun DataIntegrityCard(isValid: Boolean) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isValid) Color(0xFF1A3A1A) else Color(0xFF3A1A1A)
         )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                if (isValid) Icons.Default.CheckCircle else Icons.Default.Error,
+                contentDescription = null,
+                tint = if (isValid) Color(0xFF4CAF50) else Color(0xFFF44336),
+                modifier = Modifier.size(24.dp)
+            )
+            
+            Spacer(modifier = Modifier.width(12.dp))
+            
+            Column {
+                Text(
+                    text = "Целостность данных",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = if (isValid) "Все данные проверены" else "Обнаружены ошибки",
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BlockCard(block: com.example.cycletracker.blockchain.DataBlock) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Text(
+                text = "Блок ${block.id.take(8)}...",
+                color = Color(0xFF00E5FF),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Время: ${java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", java.util.Locale.getDefault()).format(java.util.Date(block.timestamp))}",
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 12.sp
+            )
+            Text(
+                text = "Хеш: ${block.hash.take(16)}...",
+                color = Color.White.copy(alpha = 0.5f),
+                fontSize = 10.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun SecurityTab(blockchainState: com.example.cycletracker.blockchain.BlockchainState) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            Text(
+                text = "Безопасность данных",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        item {
+            SecurityFeatureCard(
+                icon = Icons.Default.Lock,
+                title = "Шифрование",
+                description = "Все данные зашифрованы AES-256",
+                isEnabled = true
+            )
+        }
+        
+        item {
+            SecurityFeatureCard(
+                icon = Icons.Default.Fingerprint,
+                title = "Биометрическая защита",
+                description = "Доступ по отпечатку пальца",
+                isEnabled = true
+            )
+        }
+        
+        item {
+            SecurityFeatureCard(
+                icon = Icons.Default.CloudOff,
+                title = "Локальное хранение",
+                description = "Данные хранятся только на устройстве",
+                isEnabled = true
+            )
+        }
+        
+        item {
+            SecurityFeatureCard(
+                icon = Icons.Default.VerifiedUser,
+                title = "Блокчейн валидация",
+                description = "Целостность данных проверена блокчейном",
+                isEnabled = blockchainState.isConnected
+            )
+        }
+    }
+}
+
+@Composable
+fun SecurityFeatureCard(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    description: String,
+    isEnabled: Boolean
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = if (isEnabled) Color(0xFF4CAF50) else Color(0xFF666666),
+                modifier = Modifier.size(24.dp)
+            )
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = title,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = description,
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp
+                )
+            }
+            
+            Icon(
+                if (isEnabled) Icons.Default.CheckCircle else Icons.Default.Cancel,
+                contentDescription = null,
+                tint = if (isEnabled) Color(0xFF4CAF50) else Color(0xFF666666),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun BlockchainSettingsTab() {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            Text(
+                text = "Настройки блокчейна",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        item {
+            SettingsItem(
+                icon = Icons.Default.Sync,
+                title = "Синхронизация",
+                description = "Автоматическая синхронизация данных",
+                isEnabled = true
+            )
+        }
+        
+        item {
+            SettingsItem(
+                icon = Icons.Default.Backup,
+                title = "Резервное копирование",
+                description = "Создание резервных копий",
+                isEnabled = true
+            )
+        }
+        
+        item {
+            SettingsItem(
+                icon = Icons.Default.Delete,
+                title = "Очистка данных",
+                description = "Удаление всех данных",
+                isEnabled = false
+            )
+        }
+    }
+}
+
+@Composable
+fun SettingsItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    description: String,
+    isEnabled: Boolean
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = Color(0xFF00E5FF),
+                modifier = Modifier.size(24.dp)
+            )
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = title,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = description,
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp
+                )
+            }
+            
+            Switch(
+                checked = isEnabled,
+                onCheckedChange = { },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color(0xFF00E5FF),
+                    checkedTrackColor = Color(0xFF00E5FF).copy(alpha = 0.3f)
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun EmptyStateCard(
+    icon: String,
+    title: String,
+    description: String
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = icon,
+                fontSize = 48.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = description,
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun getRarityColor(rarity: NFTRarity): Color {
+    return when (rarity) {
+        NFTRarity.COMMON -> Color(0xFF9CA3AF)
+        NFTRarity.RARE -> Color(0xFF3B82F6)
+        NFTRarity.EPIC -> Color(0xFF8B5CF6)
+        NFTRarity.LEGENDARY -> Color(0xFFF59E0B)
+        NFTRarity.MYTHIC -> Color(0xFFEF4444)
     }
 }

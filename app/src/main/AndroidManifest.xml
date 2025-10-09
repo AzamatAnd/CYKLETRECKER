@@ -1,49 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-	<uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
-	<uses-permission android:name="android.permission.CAMERA" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-	<!-- AR Core permissions -->
-	<uses-feature android:name="android.hardware.camera.ar" android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.HEALTH_CONNECT" />
 
-	<!-- Blockchain permissions -->
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	
-	<application
-			android:name=".CycleApp"
-			android:allowBackup="true"
-			android:dataExtractionRules="@xml/data_extraction_rules"
-			android:fullBackupContent="@xml/backup_rules"
-			android:icon="@drawable/ic_cycle_tracker_logo"
-			android:label="@string/app_name"
-			android:roundIcon="@drawable/ic_cycle_tracker_logo"
-			android:supportsRtl="true"
-			android:theme="@style/Theme.CycleTracker"
-			android:usesCleartextTraffic="false"
-			android:requestLegacyExternalStorage="false"
-			android:preserveLegacyExternalStorage="false"
-			android:exported="false"
-			android:enableOnBackInvokedCallback="true">
-		<receiver
-			android:name=".widget.NextCycleWidget"
-			android:exported="false">
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-			</intent-filter>
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CycleTracker"
+        tools:targetApi="31">
+        
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CycleTracker"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Health Connect -->
+        <uses-library
+            android:name="androidx.health.connect.client"
+            android:required="false" />
+            
+    </application>
 
-			<meta-data
-				android:name="android.appwidget.provider"
-				android:resource="@xml/widget_next_cycle_info" />
-		</receiver>
-		<activity
-			android:name=".MainActivity"
-			android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-	</application>
 </manifest>
